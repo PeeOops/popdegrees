@@ -1,0 +1,90 @@
+import { useState } from 'react';
+import logo from '../assets/logo.png';
+
+
+const Navigation = () => {
+
+    const [isToggle, setIsToggle] = useState(false);
+
+    // Toggle Mobile Navigation Links
+    const handleClickToggle = () =>{
+    setIsToggle(prev => !prev);
+    }
+
+    return(
+    <div>
+        <nav className="bg-red-950">
+            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <a href="" className="flex items-center space-x-3">
+                    <img src={logo} className="h-12 rounded-full border-2" alt="PopDegrees Logo" />
+                    <span className="self-center text-2xl font-bold whitespace-nowrap text-white">PopDegrees</span>
+                </a>
+
+                <div className="flex md:order-2">
+                    {/* Search Input */}
+                    <div className="relative hidden md:block">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg className="w-4 h-4 text-red-950" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" strokeLineCap="round" strokeLineJoin="round" strokeWidth="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                            <span className="sr-only">Search icon</span>
+                        </div>
+                        <input type="text" id="search-navbar"
+                            className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Search..." />
+                    </div>
+                    {/* Hamburger Mobile Icon */}
+                    <button data-collapse-toggle="navbar-search" type="button"
+                        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-red-950 bg-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        aria-controls="navbar-search" aria-expanded="false" onClick={handleClickToggle}>
+                        <span className="sr-only">Toggle</span>
+                        <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 17 14">
+                            <path stroke="currentColor" strokeLineCap="round" strokeLineJoin="round" strokeWidth="2"
+                                d="M1 1h15M1 7h15M1 13h15" />
+                        </svg>
+                    </button>
+                </div>
+
+                {/* Navigation Links Mobile */}
+                <div className={`items-center justify-between ${!isToggle ? "hidden" : ""} w-full md:flex md:w-auto md:order-1`} id="navbar-search">
+                    <div className="relative mt-3 md:hidden">
+                        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg className="w-4 h-4 text-red-950" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" strokeLineCap="round" strokeLineJoin="round" strokeWidth="2"
+                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="text" id="search-navbar"
+                            className="block w-full p-2 ps-10 text-sm text-red-950 border border-red-950 rounded-lg bg-gray-50 focus:ring-red-950 focus:border-red-950"
+                            placeholder="Search..." />
+                    </div>
+
+                    {/* Navigation Links */}
+                    <ul
+                        className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-red-950 md:items-center">
+                        <li>
+                            <a href="#"
+                                className="block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2"
+                                aria-current="page">Home</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">Movies</a>
+                        </li>
+                        <li>
+                            <a href="#"
+                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">TV Series</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    )
+}
+
+export default Navigation;

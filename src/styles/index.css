@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@font-face {
+    font-family: 'Apothem';
+    src: url(../assets/fonts/apothem.ttf);
+}
+
+.apothem{
+    font-family: 'Apothem', sans-serif;
+}
+
+.montserrat{
+    font-family: 'Montserrat', sans-serif;
+}

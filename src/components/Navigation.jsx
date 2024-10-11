@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import logo from '../assets/logo.png';
+import Logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 
 const Navigation = () => {
@@ -13,11 +14,11 @@ const Navigation = () => {
 
     return(
     <div>
-        <nav className="bg-red-950">
+        <nav className="bg-red-950 montserrat">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="" className="flex items-center space-x-3">
-                    <img src={logo} className="h-12 rounded-full border-2" alt="PopDegrees Logo" />
-                    <span className="self-center text-2xl font-bold whitespace-nowrap text-white">PopDegrees</span>
+                    <img src={Logo} className="h-12 rounded-full border-2" alt="PopDegrees Logo" />
+                    <span className="self-center text-2xl font-bold whitespace-nowrap text-white apothem">PopDegrees</span>
                 </a>
 
                 <div className="flex md:order-2">
@@ -67,17 +68,17 @@ const Navigation = () => {
                     <ul
                         className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-red-950 md:items-center">
                         <li>
-                            <a href="#"
+                            <Link to="/"
                                 className="block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2"
-                                aria-current="page">Home</a>
+                                aria-current="page">Home</Link>
                         </li>
                         <li>
-                            <a href="#"
-                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">Movies</a>
+                            <Link to="/movies"
+                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">Movies</Link>
                         </li>
                         <li>
-                            <a href="#"
-                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">TV Series</a>
+                            <Link to="/series"
+                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">TV Series</Link>
                         </li>
                     </ul>
                 </div>

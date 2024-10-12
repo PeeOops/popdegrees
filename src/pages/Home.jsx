@@ -52,6 +52,32 @@ const Home = () => {
                 </div>
 
             </div>
+            <div className="flex justify-center items-center h-auto flex-col mt-10 apothem font-bold">
+                <p className="text-left text-3xl">Popular Series</p>
+                <div className="flex flex-row space-x-2 mt-2">
+
+                    <div className="flex flex-col">
+                        <div className="flex space-x-2">
+                            <img src={Deadpool} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                            <img src={BadBoys} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                            <img src={FamilyGuy} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                            <img src={InsideOut} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                        </div>
+                        <div className="flex space-x-2 mt-2">
+                            <img src={Joker} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                            <img src={Platform} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                            <img src={Smile} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                            <img src={Speak} alt="" className="w-12 sm:w-24 md:w-32 lg:w-40" />
+                        </div>
+                    </div>
+                    <img src={Venom} alt="" className="w-24 sm:w-48 md:w-64 lg:w-80" />
+                </div>
+                <div className="flex flex-col align-center justify-center items-center mt-2">
+                    <div className="border-l-2 border-dashed border-black h-12"></div>
+                    <p className="border-dashed border-2 border-black p-4">View All</p>
+                </div>
+
+            </div>
             <Footer />
 
         </div>

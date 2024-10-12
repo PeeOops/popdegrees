@@ -16,10 +16,10 @@ const Navigation = () => {
     <div>
         <nav className="bg-red-950 montserrat">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="" className="flex items-center space-x-3">
+                <Link to="/" className="flex items-center space-x-3">
                     <img src={Logo} className="h-12 rounded-full border-2" alt="PopDegrees Logo" />
                     <span className="self-center text-2xl font-bold whitespace-nowrap text-white apothem">PopDegrees</span>
-                </a>
+                </Link>
 
                 <div className="flex md:order-2">
                     {/* Search Input */}

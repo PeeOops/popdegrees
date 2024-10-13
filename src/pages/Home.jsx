@@ -27,7 +27,7 @@ const Home = () => {
                     <h1 className="text-white text-center text-3xl font-bold montserrat md:text-4xl">Where Every Movie Finds Its Spotlight!</h1>
                 </div>
             </div>
-            <img src={Film} alt="" className="-z-10 absolute w-120 m-0 p-0"/>
+            <img src={Film} alt="" className="-z-10 hidden lg:block absolute w-120 m-0 p-0"/>
 
             <div className="flex justify-center items-center h-auto flex-col mt-10 apothem font-bold z-10">
                 <p className="text-left text-3xl">Popular Movies</p>
@@ -53,7 +53,7 @@ const Home = () => {
                     <p className="border-dashed border-2 border-black p-4">View All</p>
                 </div>
             </div>
-            <img src={Film} alt="" className="-z-10 absolute right-0 w-120 m-0 p-0 transform scale-x-[-1]"/>
+            <img src={Film} alt="" className="-z-10 hidden lg:block absolute right-0 w-120 m-0 p-0 transform scale-x-[-1]"/>
             <div className="flex justify-center items-center h-auto flex-col mt-10 apothem font-bold z-10">
                 <p className="text-left text-3xl">Popular Series</p>
                 <div className="flex flex-row space-x-2 mt-2">

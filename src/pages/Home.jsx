@@ -91,17 +91,17 @@ const Home = () => {
                 <p className="text-left text-3xl">Popular Movies</p>
                 <div className="flex flex-row space-x-2 mt-2 items-center">
                     {popularMovies.slice(0,1).map((movie) => (
-                        <Link to={`movies/${movie.id}`} className="m-0 p-0"> <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-24 sm:w-48 md:w-64 lg:w-80 cursor-pointer" loading="lazy"  /></Link>
+                        <Link to={`movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out"> <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-24 sm:w-48 md:w-64 lg:w-80 cursor-pointer" loading="lazy"  /></Link>
                     ))}
                     <div className="flex flex-col space-y-2">
                         <div className="flex space-x-2">
                             {popularMovies.slice(1,5).map((movie) => (
-                                <Link to={`movies/${movie.id}`} className="m-0 p-0"><img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer" loading="lazy" /></Link>
+                                <Link to={`movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out"><img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer " loading="lazy" /></Link>
                             ))}
                         </div>
                         <div className="flex space-x-2">
                             {popularMovies.slice(5,9).map((movie) => (
-                                <Link to={`movies/${movie.id}`} className="m-0 p-0"><img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer" loading="lazy" /></Link>
+                                <Link to={`movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out"><img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer " loading="lazy" /></Link>
                             ))}
                         </div>
                     </div>
@@ -121,17 +121,23 @@ const Home = () => {
                     <div className="flex flex-col items-center space-y-2">
                         <div className="flex space-x-2">
                             {topSeries.slice(1,5).map((series) => (
-                                <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
+                                    <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40 object-cover" loading="lazy" />
+                                </Link>
                             ))}
                         </div>
                         <div className="flex space-x-2">
                             {topSeries.slice(5,9).map((series) => (
-                                <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+
+                                <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out"><img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                </Link>
                             ))}
                         </div>
                     </div>
                     {topSeries.slice(0,1).map((series) => (
+                        <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
                         <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-24 sm:w-48 md:w-64 lg:w-80" />
+                        </Link>
                     ))}
 
                 </div>
@@ -148,14 +154,22 @@ const Home = () => {
                 <div className="flex flex-row space-x-2 mt-2">
                     <div className="flex flex-col space-y-2">
                         <div className="flex space-x-2">
+
                             {upcomingMovies.slice(1,7).map((movie) => (
-                                <img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                <Link className="hover:scale-110 transition-transform duration-300 ease-in-out">
+                                    <img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                </Link>
                             ))}
+                 
                         </div>
                         <div className="flex space-x-2">
+                            
                             {upcomingMovies.slice(7,13).map((movie) => (
-                                <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                <Link className="hover:scale-110 transition-transform duration-300 ease-in-out">
+                                    <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                </Link>
                             ))}
+                            
                         </div>
                     </div>
                 </div>

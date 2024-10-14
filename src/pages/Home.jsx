@@ -3,6 +3,7 @@ import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 import Hero from '../assets/hero.jpg';
 import Film from '../assets/film.svg'
+import { Link } from "react-router-dom";
 
 const API_KEY = 'cbfc56177fc1d8965e8f21499c9b3ff0';
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -90,17 +91,17 @@ const Home = () => {
                 <p className="text-left text-3xl">Popular Movies</p>
                 <div className="flex flex-row space-x-2 mt-2">
                     {popularMovies.slice(0,1).map((movie) => (
-                        <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-24 sm:w-48 md:w-64 lg:w-80" loading="lazy" />
+                        <Link to={`movies/${movie.id}`} className="m-0 p-0"> <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-24 sm:w-48 md:w-64 lg:w-80 cursor-pointer" loading="lazy"  /></Link>
                     ))}
                     <div className="flex flex-col">
                         <div className="flex space-x-2">
                             {popularMovies.slice(1,5).map((movie) => (
-                                <img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                <Link to={`movies/${movie.id}`} className="m-0 p-0"><img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer" loading="lazy" /></Link>
                             ))}
                         </div>
                         <div className="flex space-x-2 mt-2">
                             {popularMovies.slice(5,9).map((movie) => (
-                                <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer" loading="lazy" />
                             ))}
                         </div>
                     </div>

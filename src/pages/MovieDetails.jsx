@@ -10,6 +10,7 @@ const MovieDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [movie, setMovie] = useState({});
+    const [casts, setCasts] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [isNavChange, SetIsNavChange] = useState("cast");
@@ -24,7 +25,6 @@ const MovieDetails = () => {
                 }
                 const data = await response.json();
                 setMovie(data);
-                
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -32,7 +32,23 @@ const MovieDetails = () => {
             }
         }
 
+        const fetchCasts = async () => {
+            const CASTS_URL = `${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`;
+            try {
+                const response = await fetch(CASTS_URL);
+                if(!response.ok){
+                    throw new Error('Fetch data failed');
+                }
+                const data = await response.json();
+                setCasts(data.cast);
+                console.log(casts)
+            } catch (error) {
+                setError(error.message);
+            }
+        }
+
         fetchMovieDetails();
+        fetchCasts();
     },[id])
 
     const handleClickNavChange = (id) => {
@@ -48,15 +64,15 @@ const MovieDetails = () => {
     }
 
 
-    return(
+    return( 
         <div className="flex flex-row">
-            <div className="bg-white h-screen w-1/3 p-8">
+            <div className="bg-white h-screen w-1/3 p-8 flex items-start flex-col">
                 <i className="fa-solid fa-arrow-left mb-8 cursor-pointer" onClick={() => navigate(-1)} > Back</i>
                 <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.name} className="rounded-lg 2xl:w-96 lg:w-80 m-auto"/>
             </div>
             <div className="bg-red-950 h-screen w-2/3 p-8 text-white montserrat overflow-x-hidden">
                 <div className="flex space-x-80 items-center flex-row">
-                    <h1 className="2xl:text-4xl lg:text-2xl font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
+                    <h1 className="2xl:text-4xl lg:text-2xl md:text-xl font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <hr className="border-t border-gray-300 my-2" />
@@ -75,19 +91,21 @@ const MovieDetails = () => {
                 </div>
                 {/* Casts */}
                 <div className={isNavChange === "cast" ? "block" : "hidden"}>
-                    <p className="mt-2 text-lg font-bold">Top Cast</p>
+                    <p className="mt-2 text-lg font-bold">Top Casts</p>
                     <div className="flex space-x-2 overflow-x-auto w-full">
-                    {Array.from({ length: 7 }).map((_, index) => (
-                            <div key={index} className="bg-white text-red-950 rounded-lg lg:w-36 2xl:w-40 flex-shrink-0 mb-2">
+                    {
+                        casts.slice(0,10).map((cast) => (
+                            <div key={cast.id} className="bg-white text-red-950 rounded-lg md:w-32 lg:w-32 2xl:w-40 flex-shrink-0 mb-2">
                                 <img 
-                                    src="https://media.themoviedb.org/t/p/w300_and_h450_bestv2/d81K0RH8UX7tZj49tZaQhZ9ewH.jpg" 
-                                    alt="" 
-                                    className="rounded-t-lg h-auto" 
+                                    src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`} 
+                                    alt={cast.name} 
+                                    className="rounded-t-lg h-auto" loading="lazy" 
                                 />
-                                <p className="montserrat font-bold m-1.5">Tom Hardy</p>
-                                <p className="m-1.5 text-sm">as Eddie Brock / Venom</p>
+                                <p className="montserrat font-bold m-1.5">{cast.name}</p>
+                                <p className="m-1.5 text-sm">as {cast.character}</p>
                             </div>
-                        ))}
+                        ))
+                    }
                     </div>
                 </div>
                 {/* Details */}

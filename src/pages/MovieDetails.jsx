@@ -8,25 +8,27 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 
 const MovieDetails = () => {
 
-    const {id} = useParams();
-    const MOVIE_DETAILS_URL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}`
+    const { id } = useParams();
     const [movie, setMovie] = useState({});
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
     const [isNavChange, SetIsNavChange] = useState("cast");
 
     useEffect(() => {
         const fetchMovieDetails = async () => {
+            const MOVIE_DETAILS_URL = `${BASE_URL}/movie/${id}?api_key=${API_KEY}`
             try {
                 const response = await fetch(MOVIE_DETAILS_URL);
                 if(!response.ok){
                     throw new Error('Fetch data failed');
                 }
                 const data = await response.json();
-                console.log(data)
                 setMovie(data);
                 
             } catch (error) {
                 setError(error.message);
+            } finally {
+                setLoading(false);
             }
         }
 
@@ -54,12 +56,12 @@ const MovieDetails = () => {
             </div>
             <div className="bg-red-950 h-screen w-2/3 p-8 text-white montserrat overflow-x-hidden">
                 <div className="flex space-x-80 items-center flex-row">
-                    <h1 className="2xl:text-4xl lg:text-2xl font-bold">{movie.title} ({movie.release_date.split('-')[0]})</h1>
+                    <h1 className="2xl:text-4xl lg:text-2xl font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
                     <i className="fa-solid fa-magnifying-glass"></i>
                 </div>
                 <hr className="border-t border-gray-300 my-2" />
                 <div className="flex space-x-4 items-center flex-row">
-                    <p>{movie.genres.map(genre => genre.name).join(', ')}</p>
+                    <p>{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                     <p className="p-0.5 border-white border-2 rounded-md font-bold text-sm">PG-13</p>
                 </div>
                 <p className="italic text-gray-400">{movie.tagline}</p>
@@ -104,12 +106,12 @@ const MovieDetails = () => {
                     </div>
                     <div className="flex flex-row space-x-2 items-center mt-2">
                         <p className="font-bold">Original Language: </p>
-                        <p>{movie.original_language.toUpperCase()}</p>
+                        <p>{movie.original_language?.toUpperCase()}</p>
                     </div>
 
                     <div className="flex flex-row space-x-2 items-center mt-2">
                         <p className="font-bold">Budget: </p>
-                        <p>${movie.budget.toLocaleString()}</p>
+                        <p>${movie.budget?.toLocaleString()}</p>
                     </div>
                     <div className="flex flex-row space-x-2 items-center mt-2">
                         <p className="font-bold">Revenue: </p>

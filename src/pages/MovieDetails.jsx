@@ -12,6 +12,7 @@ const MovieDetails = () => {
     const navigate = useNavigate();
     const [movie, setMovie] = useState({});
     const [casts, setCasts] = useState([]);
+    const [medias, setMedias] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [isNavChange, SetIsNavChange] = useState("cast");
@@ -49,8 +50,26 @@ const MovieDetails = () => {
             }
         }
 
+        const fetchMedias = async () => {
+            const MEDIA_URL = `${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`;
+            try {
+                const response = await fetch(MEDIA_URL);
+                if(!response.ok){
+                    throw new Error('Fetch data failed');
+                }
+                const data = await response.json();
+                setMedias(data.results);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+
         fetchMovieDetails();
         fetchCasts();
+        fetchMedias();
     },[id])
 
     const handleClickNavChange = (id) => {
@@ -67,33 +86,51 @@ const MovieDetails = () => {
 
 
     return( 
-        <div className="flex flex-row">
+        <div className="flex flex-row h-screen">
             {/* Movie Poster */}
-            <div className="bg-white h-screen w-1/3 p-8 flex items-start flex-col relative z-10">
+            <div className="bg-white w-1/3 p-8 flex items-start flex-col relative z-10">
                 <i className="fa-solid fa-arrow-left mb-8 cursor-pointer" onClick={() => navigate(-1)} > Back</i>
-                {loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto"></div> : <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.name} className="rounded-lg 2xl:w-96 lg:w-80 m-auto"/>}
+                {loading ? (
+                    <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48"></div>
+                    ) : (
+                    movie.poster_path !== null ? (
+                    <img 
+                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                    alt={movie.name} 
+                    className="rounded-lg 2xl:w-96 lg:w-80 m-auto" 
+                    />
+                    ) : (
+                    <div className="bg-gray-300 2xl:w-96 2xl:h-full flex justify-center items-center rounded-lg m-auto"><p className="font-bold text-center text-gray-600">N/A</p></div>
+                    )
+                )}
             </div>
-            <div style={{backgroundImage : `url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path})`}} className="bg-cover bg-center bg-red-950 h-screen w-2/3 p-8 text-white montserrat overflow-x-hidden">
-                <div className="absolute inset-0 bg-black opacity-50"></div>
-
+            {/* Movie Background */}
+            <div style={{backgroundImage : `url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path})`}} className="bg-cover bg-center bg-red-950 w-2/3 p-8 text-white montserrat overflow-x-hidden">
+                <div className="absolute inset-0 bg-black opacity-70"></div>
                 <div className="relative z-10">
+
+                    {/* Movie Title */}
                     <div className="flex justify-between items-center">
-                        <h1 className="2xl:text-4xl lg:text-2xl md:text-xl font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
+                        <h1 className="2xl:text-3xl lg:text-2xl md:text-xl font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
                         <i className="fa-solid fa-magnifying-glass right-content"></i>
                     </div>
                     <hr className="border-t border-gray-300 my-2" />
+                    {/* Movie Genres & Certificates */}
                     <div className="flex space-x-4 items-center flex-row">
-                        <p>{movie.genres?.map((genre) => genre.name).join(', ')}</p>
+                        <p className="2xl:text-md">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                         <p className="p-0.5 border-white border-2 rounded-md font-bold text-sm">PG-13</p>
                     </div>
+                    {/* Movie Tagline */}
                     <p className="italic text-gray-400">{movie.tagline}</p>
-                    <p className="mt-2 lg:text-md 2xl:text-lg font-bold">Overview</p>
-                    <p className="2xl:text-md lg:text-sm line-clamp-3">{movie.overview}.</p>
+                    {/* Movie Overview */}
+                    <p className="mt-1 lg:text-md 2xl:text-lg font-bold">Overview</p>
+                    <p className="2xl:text-md lg:text-sm line-clamp-2">{movie.overview}.</p>
+                    {/* Nav Links */}
                     <div className="mt-2 flex flex-row">
-                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ${isNavChange === "cast" ? "border-b-4" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
-                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "media" ? "border-b-4" : ""}`}>Media</p>
-                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "reviews" ? "border-b-4" : ""}`}>Reviews</p>
-                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "details" ? "border-b-4" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
+                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ${isNavChange === "cast" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
+                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
+                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
+                        <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
                     </div>
                     {/* Casts */}
                     <div className={isNavChange === "cast" ? "block" : "hidden"}>
@@ -122,6 +159,24 @@ const MovieDetails = () => {
                         }
                         </div>
                     </div>
+
+                    {/* Medias */}
+                    <div className={isNavChange === "media" ? "block" : "hidden"}>
+                        <p className="mt-2 text-lg font-bold">Movie Medias</p>
+                        <div className="flex flex-row space-x-4 overflow-x-auto mt-2">
+                            {
+                                medias.slice(-8).reverse().map((media) => (
+                                    <iframe className="2xl:w-full 2xl:h-96 aspect-video lazyload" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowfullscreen></iframe>
+                                ))
+                            }
+                        </div>
+                    </div>
+
+                    {/* Reviews */}
+                    <div className={isNavChange === "reviews" ? "block" : "hidden"}>
+                        <p className="mt-2 text-lg font-bold">Movie Reviews</p>
+                    </div>
+
                     {/* Details */}
                     <div className={isNavChange === "details" ? "block" : "hidden"}>
                         <p className="mt-2 text-lg font-bold">Movie Details</p>

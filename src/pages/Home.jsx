@@ -156,7 +156,7 @@ const Home = () => {
                         <div className="flex space-x-2">
 
                             {upcomingMovies.slice(1,7).map((movie) => (
-                                <Link className="hover:scale-110 transition-transform duration-300 ease-in-out">
+                                <Link to={`movies/${movie.id}`} className="hover:scale-110 transition-transform duration-300 ease-in-out">
                                     <img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
                                 </Link>
                             ))}
@@ -165,7 +165,7 @@ const Home = () => {
                         <div className="flex space-x-2">
                             
                             {upcomingMovies.slice(7,13).map((movie) => (
-                                <Link className="hover:scale-110 transition-transform duration-300 ease-in-out">
+                                <Link to={`movies/${movie.id}`} className="hover:scale-110 transition-transform duration-300 ease-in-out">
                                     <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
                                 </Link>
                             ))}

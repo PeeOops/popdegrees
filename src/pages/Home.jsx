@@ -106,9 +106,9 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col align-center justify-center items-center mt-2 z-10">
+                <div className="flex flex-col align-center justify-center items-center mt-2 z-10 cursor-pointer">
                     <div className="border-l-2 border-dashed border-black h-12"></div>
-                    <p className="border-dashed border-2 border-black p-4">View All</p>
+                    <p className="border-dashed border-2 border-black p-4 hover:bg-red-950 hover:text-white hover:border-solid">View All</p>
                 </div>
             </div>
 
@@ -136,14 +136,14 @@ const Home = () => {
                     </div>
                     {topSeries.slice(0,1).map((series) => (
                         <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
-                        <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-24 sm:w-48 md:w-64 lg:w-80" />
+                        <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-24 sm:w-48 md:w-64 lg:w-80" loading="lazy"/>
                         </Link>
                     ))}
 
                 </div>
-                <div className="flex flex-col align-center justify-center items-center mt-2">
+                <div className="flex flex-col align-center justify-center items-center mt-2 cursor-pointer">
                     <div className="border-l-2 border-dashed border-black h-12"></div>
-                    <p className="border-dashed border-2 border-black p-4">View All</p>
+                    <p className="border-dashed border-2 border-black p-4 hover:bg-red-950 hover:text-white hover:border-solid">View All</p>
                 </div>
             </div>
 
@@ -173,9 +173,9 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col align-center justify-center items-center mt-2 z-10">
+                <div className="flex flex-col align-center justify-center items-center mt-2 z-10 cursor-pointer">
                     <div className="border-l-2 border-dashed border-black h-12"></div>
-                    <p className="border-dashed border-2 border-black p-4">View All</p>
+                    <p className="border-dashed border-2 border-black p-4 hover:bg-red-950 hover:text-white hover:border-solid">View All</p>
                 </div>
             </div>
 

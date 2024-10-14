@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import User from '../assets/user.svg';
 
 
 const API_KEY = 'cbfc56177fc1d8965e8f21499c9b3ff0';
@@ -41,7 +42,7 @@ const MovieDetails = () => {
                 }
                 const data = await response.json();
                 setCasts(data.cast);
-                console.log(casts)
+                console.log(data)
             } catch (error) {
                 setError(error.message);
             }
@@ -94,12 +95,12 @@ const MovieDetails = () => {
                     <p className="mt-2 text-lg font-bold">Top Casts</p>
                     <div className="flex space-x-2 overflow-x-auto w-full">
                     {
-                        casts.slice(0,10).map((cast) => (
+                        casts.slice(0,20).map((cast) => (
                             <div key={cast.id} className="bg-white text-red-950 rounded-lg md:w-32 lg:w-32 2xl:w-40 flex-shrink-0 mb-2">
                                 <img 
-                                    src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`} 
+                                    src={cast.profile_path !== null ? `https://image.tmdb.org/t/p/w500${cast.profile_path}` : User} 
                                     alt={cast.name} 
-                                    className="rounded-t-lg h-auto" loading="lazy" 
+                                    className="rounded-t-lg h-48" loading="lazy" 
                                 />
                                 <p className="montserrat font-bold m-1.5">{cast.name}</p>
                                 <p className="m-1.5 text-sm">as {cast.character}</p>

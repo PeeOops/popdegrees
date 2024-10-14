@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import Venom from '../assets/movies/venom.jpg';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const API_KEY = 'cbfc56177fc1d8965e8f21499c9b3ff0';
@@ -9,6 +8,7 @@ const BASE_URL = 'https://api.themoviedb.org/3';
 const MovieDetails = () => {
 
     const { id } = useParams();
+    const navigate = useNavigate();
     const [movie, setMovie] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
@@ -51,7 +51,7 @@ const MovieDetails = () => {
     return(
         <div className="flex flex-row">
             <div className="bg-white h-screen w-1/3 p-8">
-                <i className="fa-solid fa-arrow-left mb-8"> Back</i>
+                <i className="fa-solid fa-arrow-left mb-8 cursor-pointer" onClick={() => navigate(-1)} > Back</i>
                 <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie.name} className="rounded-lg 2xl:w-96 lg:w-80 m-auto"/>
             </div>
             <div className="bg-red-950 h-screen w-2/3 p-8 text-white montserrat overflow-x-hidden">

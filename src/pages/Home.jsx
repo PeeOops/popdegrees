@@ -101,7 +101,7 @@ const Home = () => {
                         </div>
                         <div className="flex space-x-2 mt-2">
                             {popularMovies.slice(5,9).map((movie) => (
-                                <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer" loading="lazy" />
+                                <Link to={`movies/${movie.id}`} className="m-0 p-0"><img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer" loading="lazy" /></Link>
                             ))}
                         </div>
                     </div>

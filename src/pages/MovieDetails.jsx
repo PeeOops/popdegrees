@@ -66,7 +66,7 @@ const MovieDetails = () => {
                 </div>
                 <p className="italic text-gray-400">{movie.tagline}</p>
                 <p className="mt-2 lg:text-md 2xl:text-lg font-bold">Overview</p>
-                <p className="2xl:text-md lg:text-sm">{movie.overview}.</p>
+                <p className="2xl:text-md lg:text-sm line-clamp-3">{movie.overview}.</p>
                 <div className="mt-2 flex flex-row">
                     <p className={`cursor-pointer lg:text-sm 2xl:text-md ${isNavChange === "cast" ? "border-b-4" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
                     <p className={`cursor-pointer lg:text-sm 2xl:text-md ml-8 ${isNavChange === "media" ? "border-b-4" : ""}`}>Media</p>

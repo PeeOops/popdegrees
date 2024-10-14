@@ -91,7 +91,7 @@ const Home = () => {
                 <p className="text-left text-3xl">Popular Movies</p>
                 <div className="flex flex-row space-x-2 mt-2">
                     {popularMovies.slice(0,1).map((movie) => (
-                        <Link to={`movies/${movie.id}`} className="m-0 p-0"> <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-24 sm:w-48 md:w-64 lg:w-80 cursor-pointer" loading="lazy"  /></Link>
+                        <Link to={`movies/${movie.id}`} className="block"> <img key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-24 sm:w-48 md:w-64 lg:w-80 cursor-pointer" loading="lazy"  /></Link>
                     ))}
                     <div className="flex flex-col">
                         <div className="flex space-x-2">

@@ -59,6 +59,7 @@ const MovieDetails = () => {
                 }
                 const data = await response.json();
                 setMedias(data.results);
+                console.log(medias)
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -165,8 +166,8 @@ const MovieDetails = () => {
                         <p className="mt-2 text-lg font-bold">Movie Medias</p>
                         <div className="flex flex-row space-x-4 overflow-x-auto mt-2">
                             {
-                                medias.slice(-8).reverse().map((media) => (
-                                    <iframe className="2xl:w-full 2xl:h-96 aspect-video lazyload" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowfullscreen></iframe>
+                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => (
+                                    <iframe className="2xl:w-full 2xl:h-96 aspect-video lazyload" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
                                 ))
                             }
                         </div>

@@ -137,10 +137,16 @@ const MovieDetails = () => {
                     <div className={isNavChange === "media" ? "block" : "hidden"}>
                         <p className="my-2 text-lg font-bold">Movie Medias</p>
                         <div className="flex flex-row space-x-4 overflow-x-auto mt-2">
+                            
                             {
-                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => (
-                                    <iframe className="w-full 2xl:h-96 lg:h-64 aspect-video lazyload mb-2" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
-                                ))
+                                
+                                loading ?
+                                <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-28 lg:my-16"></div> :
+                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? (
+                                    medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => ( 
+                                        <iframe className="w-full 2xl:h-96 lg:h-64 aspect-video lazyload mb-2" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
+                                    ))) :
+                                    <p className="my-2 text-lg">There is no trailer at the moment.</p>
                             }
                         </div>
                     </div>

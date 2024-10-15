@@ -34,7 +34,6 @@ const MovieDetails = () => {
               setCasts(castData.cast);
               setMedias(mediaData.results);
               setReviews(reviewsData.results);
-              console.log(reviewsData.results)
             } catch (error) {
               setError(error.message);
             } finally {

@@ -82,26 +82,26 @@ const MovieDetails = () => {
                 <div className="relative z-10">
                     {/* Movie Title */}
                     <div className="flex justify-between items-center">
-                        <h1 className="2xl:text-3xl lg:text-xl md:text-xl font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
-                        <i className="fa-solid fa-magnifying-glass right-content"></i>
+                        <h1 className="text-[2vw] font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
+                        <i className="fa-solid fa-magnifying-glass right-content text-[2vw]"></i>
                     </div>
                     <hr className="border-t border-gray-300 my-2" />
                     {/* Movie Genres & Certificates */}
                     <div className="flex space-x-4 items-center flex-row">
-                        <p className="2xl:text-md lg:text-sm">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
+                        <p className="text-[1.5vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                         <p className="p-0.5 border-white border-2 rounded-md font-bold text-sm">PG-13</p>
                     </div>
                     {/* Movie Tagline */}
-                    <p className="italic text-gray-400 lg:text-sm">{movie.tagline}</p>
+                    <p className="italic text-gray-400 text-[1.1vw]">{movie.tagline}</p>
                     {/* Movie Overview */}
-                    <p className="mt-1 2xl:text-lg lg:text-md font-bold">Overview</p>
-                    <p className="2xl:text-md lg:text-sm line-clamp-2">{movie.overview}.</p>
+                    <p className="mt-1 text-[1.5vw] font-bold">Overview</p>
+                    <p className="text-[1.5vw] line-clamp-2">{movie.overview}.</p>
                     {/* Nav Links */}
                     <div className="mt-2 flex flex-row">
-                        <p className={`cursor-pointer 2xl:text-md lg:text-sm ${isNavChange === "cast" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
-                        <p className={`cursor-pointer 2xl:text-md lg:text-sm ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
-                        <p className={`cursor-pointer 2xl:text-md lg:text-sm ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
-                        <p className={`cursor-pointer 2xl:text-md lg:text-sm ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
+                        <p className={`cursor-pointer text-[1.2vw] ${isNavChange === "cast" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
+                        <p className={`cursor-pointer text-[1.5vw] ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
+                        <p className={`cursor-pointer text-[1.5vw] ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
+                        <p className={`cursor-pointer text-[1.5vw] ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
                     </div>
                     {/* Casts */}
                     

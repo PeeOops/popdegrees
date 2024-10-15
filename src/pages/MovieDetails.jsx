@@ -13,6 +13,7 @@ const MovieDetails = () => {
     const [movie, setMovie] = useState({});
     const [casts, setCasts] = useState([]);
     const [medias, setMedias] = useState([]);
+    const [reviews, setReviews] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(true);
     const [isNavChange, SetIsNavChange] = useState("cast");
@@ -22,14 +23,18 @@ const MovieDetails = () => {
         const fetchData = async () => {
             setLoading(true);
             try {
-              const [movieData, castData, mediaData] = await Promise.all([
+              const [movieData, castData, mediaData, reviewsData] = await Promise.all([
                 fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then(res => res.json()),
                 fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`).then(res => res.json()),
-                fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`).then(res => res.json())
+                fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`).then(res => res.json()),
+                fetch(`${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`).then(res => res.json())
               ]);
               setMovie(movieData);
               setCasts(castData.cast);
               setMedias(mediaData.results);
+              setReviews(reviewsData.results);
+              console.log(reviewsData.results)
+              setReviews();
             } catch (error) {
               setError(error.message);
             } finally {
@@ -154,6 +159,21 @@ const MovieDetails = () => {
                     {/* Reviews */}
                     <div className={isNavChange === "reviews" ? "block" : "hidden"}>
                         <p className="mt-2 text-lg font-bold">Movie Reviews</p>
+                        <div className="flex flex-row space-x-2 items-center lg:space-y-8">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <div className="bg-white text-red-950 rounded-md p-2 lg:w-full h-full border-yellow-300 border-4     ">
+                                <p className="font-bold">Cinema Serf</p>
+                                <div className="flex flex-row justify-between items-center">
+                                    <p><b>Ratings:</b> 5 / 10</p>
+                                    <p><b>Date:</b> 15th October 2024</p>
+                                </div>
+                                <p className="mt-8 lg:line-clamp-6 font-medium">I really quite enjoyed the first of these (2015) but I struggled a bit to stay engaged with the one. "Riley" is still happily coasting through family life until one day, she embarks on the yellow brick road that is puberty. Towit, her control gallery is no longer the purview of just her lifelong guides like "Fear", "Joy" and "Anger" - now she has also to deal with the likes of disgust, envy, boredom and worst of all - anxiety. It's maybe the latter that the film should be called as we now embark on quite a humourless swipe at the culture of validation that young people must navigate. It's all about being popular. Being liked. Being the best - in the ice hockey team. Old loyalties go under the bus in favour of new aspirations and yes, much of it does ring quite true as an evaluation of the fickleness in all of us. Thing is, though, there's just too much inevitability about what comes next and there's way too much incessant dialogue. "Anger" has some fun along the way, and there is the odd comedy one-liner from the laconic "Ennui" but it just didn't resonate with me at all. The animation is standard Pixar fayre that does the job colourfully but unremarkably, and by the conclusion I was hoping there was an off button on that great big console. Yep - I'm probably too old to really appreciate this the way the kids can, but the trick for these studios has to be to engage the adults at the same time as the weans, else out come the mobile phones as our own version of ennui sets in. It's fine, but forgettable, sorry.</p>
+                                
+                            </div>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                            <p className="mt-2 font-bold float-right">View More</p>
+
                     </div>
 
                     {/* Details */}

@@ -69,10 +69,10 @@ const MovieDetails = () => {
                     <img 
                     src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                     alt={movie.name} 
-                    className="rounded-lg 2xl:w-96 lg:w-80 m-auto" 
+                    className="rounded-lg w-[25vw] m-auto" 
                     />
                     ) : (
-                    <div className="bg-gray-300 2xl:w-96 lg:w-80 h-full flex justify-center items-center rounded-lg m-auto"><p className="font-bold text-center text-gray-600">N/A</p></div>
+                    <div className="bg-gray-300 w-[25vw] h-full flex justify-center items-center rounded-lg m-auto"><p className="font-bold text-center text-gray-600">N/A</p></div>
                     )
                 )}
             </div>
@@ -88,36 +88,36 @@ const MovieDetails = () => {
                     <hr className="border-t border-gray-300 my-2" />
                     {/* Movie Genres & Certificates */}
                     <div className="flex space-x-4 items-center flex-row">
-                        <p className="text-[1.5vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
+                        <p className="text-[1.2vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                         <p className="p-0.5 border-white border-2 rounded-md font-bold text-sm">PG-13</p>
                     </div>
                     {/* Movie Tagline */}
                     <p className="italic text-gray-400 text-[1.1vw]">{movie.tagline}</p>
                     {/* Movie Overview */}
-                    <p className="mt-1 text-[1.5vw] font-bold">Overview</p>
-                    <p className="text-[1.5vw] line-clamp-2">{movie.overview}.</p>
+                    <p className="mt-1 text-[1.3vw] font-bold">Overview</p>
+                    <p className="text-[1.2vw] line-clamp-2">{movie.overview}.</p>
                     {/* Nav Links */}
                     <div className="mt-2 flex flex-row">
                         <p className={`cursor-pointer text-[1.2vw] ${isNavChange === "cast" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
-                        <p className={`cursor-pointer text-[1.5vw] ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
-                        <p className={`cursor-pointer text-[1.5vw] ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
-                        <p className={`cursor-pointer text-[1.5vw] ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
+                        <p className={`cursor-pointer text-[1.2vw] ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
+                        <p className={`cursor-pointer text-[1.2vw] ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
+                        <p className={`cursor-pointer text-[1.2vw] ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
                     </div>
                     {/* Casts */}
                     
                     <div className={isNavChange === "cast"? "block" : "hidden"}>
                         {
                             casts.length !== 0 ?
-                            <p className="my-2 text-lg font-bold">Top Casts</p> :
-                            <p className="my-2 text-lg font-bold">No Casts</p>
+                            <p className="my-2 text-[1.3vw] font-bold">Top Casts</p> :
+                            <p className="my-2 text-[1.5vw] font-bold">No Casts</p>
                         }
                         
                         <div className="flex space-x-2 overflow-x-auto w-full">
                         {
                             casts.slice(0,20).map((cast) => (
-                                <div key={cast.id} className="bg-white text-red-950 rounded-lg 2xl:w-48 lg:w-32 h-auto md:w-32 flex-shrink-0 mb-2">
+                                <div key={cast.id} className="bg-white text-red-950 rounded-lg w-[9vw] h-auto flex-shrink-0 mb-2">
                                     {loading ? (
-                                    <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-28 lg:my-16"></div>
+                                    <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] animate-spin m-auto 2xl:my-28 lg:my-16 md:my-14"></div>
                                     ) : (
                                     cast.profile_path !== null ? (
                                         <img 
@@ -126,11 +126,11 @@ const MovieDetails = () => {
                                         className="rounded-t-lg" 
                                         />
                                     ) : (
-                                        <div className="bg-gray-300 2xl:w-48 2xl:h-70 lg:w-32 lg:h-48 flex justify-center items-center rounded-t-lg"><p className="font-bold text-center text-gray-600">N/A</p></div>
+                                        <div className="bg-gray-300 w-[9vw] h-[13.5vw] flex justify-center items-center rounded-t-lg"><p className="font-bold text-center text-gray-600 text-[1.5vw]">N/A</p></div>
                                     )
                                     )}
-                                    <p className="montserrat font-bold m-1.5 lg:text-sm">{cast.name}</p>
-                                    <p className="m-1.5 lg:text-xs">as {cast.character}</p>
+                                    <p className="montserrat font-bold m-1.5 text-[1vw]">{cast.name}</p>
+                                    <p className="m-1.5 text-[0.8vw]">as {cast.character}</p>
                                 </div>
                                 
                             ))

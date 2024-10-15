@@ -34,6 +34,7 @@ const MovieDetails = () => {
               setCasts(castData.cast);
               setMedias(mediaData.results);
               setReviews(reviewsData.results);
+              console.log(reviews)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -41,7 +42,7 @@ const MovieDetails = () => {
             }
         };
         fetchData();
-    },[id])
+    },[id,currentReview])
 
     const handleClickNavChange = (id) => {
         if(id === "cast"){
@@ -173,15 +174,15 @@ const MovieDetails = () => {
                         
                             
 
-                                <div className="flex flex-row space-x-2 items-center lg:space-y-8">
+                        <div className="flex flex-row space-x-2 items-center lg:space-y-8">
                                 <i class="fa-solid fa-arrow-left cursor-pointer" onClick={handleClickPreviousReview} disabled={currentReview === 0}></i>
                                 <div className="bg-white text-red-950 rounded-md p-2 lg:w-full h-full border-yellow-300 border-4     ">
-                                <p className="font-bold">{reviews[currentReview].author}</p>
+                                <p className="font-bold">{reviews[currentReview]?.author}</p>
                                 <div className="flex flex-row justify-between items-center">
-                                    <p><b>Ratings:</b> {reviews[currentReview].author_details.rating} / 10</p>
-                                    <p><b>Reviewed on:</b> {formatDate(reviews[currentReview].created_at)}</p>
+                                    <p><b>Ratings:</b> {reviews[currentReview]?.author_details.rating} / 10</p>
+                                    <p><b>Reviewed on:</b> {formatDate(reviews[currentReview]?.created_at)}</p>
                                 </div>
-                                <p className="mt-8 lg:line-clamp-6 font-medium">{reviews[currentReview].content}</p>
+                                <p className="mt-8 lg:line-clamp-6 font-medium">{reviews[currentReview]?.content}</p>
                                 
                                 </div>
                                 <i class="fa-solid fa-arrow-right cursor-pointer" onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1}></i>

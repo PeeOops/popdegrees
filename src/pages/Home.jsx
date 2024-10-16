@@ -7,8 +7,6 @@ import { Link } from "react-router-dom";
 
 const API_KEY = 'cbfc56177fc1d8965e8f21499c9b3ff0';
 const BASE_URL = 'https://api.themoviedb.org/3';
-const POPULAR_MOVIES_URL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
-const UPCOMING_MOVIES_URL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
 const POPULAR_SERIES_URL = `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
 
 
@@ -21,54 +19,41 @@ const Home = () => {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        const fetchPopularMovies = async () => {
-            try {
-                const response = await fetch(POPULAR_MOVIES_URL);
-                if(!response.ok){
-                    throw new Error('Fetch data failed');
-                }
-                const data = await response.json();
-                setPopularMovies(data.results);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
 
-        const fetchTopSeries = async () => {
+        const fetchData = async () => {
             try {
-                const response = await fetch(POPULAR_SERIES_URL);
-                if(!response.ok){
-                    throw new Error('Fetch data failed');
-                }
-                const data = await response.json();
-                setTopSeries(data.results);
+                const [popularMoviesURL, topSeriesURL, upcomingMoviesURL] = await Promise.all([
+                    fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`).then((res) => {
+                        if(!res.ok){
+                            throw new Error("Fetch data failed");
+                        }
+                        return res.json();
+                    }),
+                    fetch(`${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=en-US&page=1`).then((res) => {
+                        if(!res.ok){
+                            throw new Error("Fetch data failed");
+                        }
+                        return res.json();
+                    }),
+                    fetch(`${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`).then((res) => {
+                        if(!res.ok){
+                            throw new Error("Fetch data failed");
+                        }
+                        return res.json();
+                    })
+                ]);
+                setPopularMovies(popularMoviesURL.results);
+                setTopSeries(topSeriesURL.results);
+                setUpcomingMovies(upcomingMoviesURL.results);
             } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        }
-
-        const fetchUpcomingMovies = async () => {
-            try {
-                const response = await fetch(UPCOMING_MOVIES_URL);
-                if(!response.ok){
-                    throw new Error('Fetch data failed');
-                }
-                const data = await response.json();
-                setUpcomingMovies(data.results);
-            } catch (error) {
-                setError(error.message);
+                setError(error.message)
             } finally {
                 setLoading(false);
             }
         }
 
-        fetchPopularMovies();
-        fetchUpcomingMovies();
-        fetchTopSeries();
+        fetchData();
+
     }, []);
 
     return(

@@ -25,10 +25,30 @@ const MovieDetails = () => {
             setLoading(true);
             try {
               const [movieData, castData, mediaData, reviewsData] = await Promise.all([
-                fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then(res => res.json()),
-                fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`).then(res => res.json()),
-                fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`).then(res => res.json()),
-                fetch(`${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`).then(res => res.json())
+                fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
+                fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
+                fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
+                fetch(`${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                })
               ]);
               setMovie(movieData);
               setCasts(castData.cast);

@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Movies from './pages/Movies';
 import TvSeries from './pages/TvSeries';
 import MovieDetails from './pages/MovieDetails';
+import TvSeriesDetails from './pages/TvSeriesDetails';
 
 
 createRoot(document.getElementById('root')).render(
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')).render(
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/movies/:id" element={<MovieDetails />}/>
+      <Route path="/series/:id" element={<TvSeriesDetails />} />
       <Route path="/series" element={<TvSeries />}/>
     </Routes>
   </BrowserRouter>

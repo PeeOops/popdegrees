@@ -21,6 +21,7 @@ const Home = () => {
     useEffect(() => {
 
         const fetchData = async () => {
+            setLoading(true);
             try {
                 const [popularMoviesURL, topSeriesURL, upcomingMoviesURL] = await Promise.all([
                     fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`).then((res) => {
@@ -106,7 +107,7 @@ const Home = () => {
                     <div className="flex flex-col items-center space-y-2">
                         <div className="flex space-x-2">
                             {topSeries.slice(1,5).map((series) => (
-                                <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
+                                <Link to={`series/${series.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
                                     <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40 object-cover" loading="lazy" />
                                 </Link>
                             ))}
@@ -114,13 +115,13 @@ const Home = () => {
                         <div className="flex space-x-2">
                             {topSeries.slice(5,9).map((series) => (
 
-                                <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out"><img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
+                                <Link to={`series/${series.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out"><img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-12 sm:w-24 md:w-32 lg:w-40" loading="lazy" />
                                 </Link>
                             ))}
                         </div>
                     </div>
                     {topSeries.slice(0,1).map((series) => (
-                        <Link className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
+                        <Link to={`series/${series.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out">
                         <img key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.name} className="w-24 sm:w-48 md:w-64 lg:w-80" loading="lazy"/>
                         </Link>
                     ))}

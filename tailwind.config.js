@@ -11,6 +11,9 @@ export default {
       },
       height: {
         '70' : '289px'
+      },
+      lineClamp : {
+        20 : '20'
       }
     },
   },

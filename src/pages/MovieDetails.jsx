@@ -23,6 +23,7 @@ const MovieDetails = () => {
     // NB: Make loading for each fetch? if necessary
     const [loading, setLoading] = useState(true);
     const [isNavChange, SetIsNavChange] = useState("cast");
+    const [viewMore, setViewMore] = useState(false);
 
     useEffect(() => {
 
@@ -81,6 +82,11 @@ const MovieDetails = () => {
         }
     }
 
+    // View More Reviews Button
+    const handleClickViewMore = () => {
+        setViewMore((prev) => !prev);
+    }
+
     // Next Review Button
     const handleClickNextReview = () => {
         if(currentReview < reviews.length - 1){
@@ -119,80 +125,80 @@ const MovieDetails = () => {
             <div style={{backgroundImage : `url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path})`}} className="text-white overflow-x-hidden montserrat bg-cover bg-center bg-red-950 w-2/3 p-8 ">
                 <div className="absolute inset-0 bg-black opacity-70"></div>
                 <div className="relative z-10">
-                    {/* Movie Title */}
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-[1.6vw] font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
-                        {/* NB: Add Search Input */}
-                        <FontAwesomeIcon icon={faMagnifyingGlass} className="right-content text-[1.4vw]" />
-                    </div>
-                    <hr className="border-t border-gray-300 my-2" />
-                    {/* Movie Genres & Certificates */}
-                    <div className="flex space-x-4 items-center flex-row">
-                        <p className="text-[1.1vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
-                        {/* NB: Add Content Rating based on Movie ID */}
-                        <p className="border-white border-2 rounded-md font-bold text-[0.9vw] p-0.5">PG-13</p>
-                    </div>
-                    {/* Movie Tagline */}
-                    <p className="italic text-gray-400 text-[1.05vw]">{movie.tagline}</p>
-                    {/* Movie Overview */}
-                    <p className="text-[1.2vw] font-bold mt-1">Overview</p>
-                    <p className="text-[1.1vw] line-clamp-3">{movie.overview}</p>
-                    {/* Nav Links */}
-                    <div className="flex flex-row mt-2">
-                        <p className={`cursor-pointer text-[1.05vw] ${isNavChange === "cast" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
-                        <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
-                        <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
-                        <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
+                    <div className={`${viewMore === true ? "hidden" : "block"}`}>
+                        {/* Movie Title */}
+                        <div className="flex justify-between items-center">
+                            <h1 className="text-[1.6vw] font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
+                            {/* NB: Add Search Input */}
+                            <FontAwesomeIcon icon={faMagnifyingGlass} className="right-content text-[1.4vw]" />
+                        </div>
+                        <hr className="border-t border-gray-300 my-2" />
+                        {/* Movie Genres & Certificates */}
+                        <div className="flex space-x-4 items-center flex-row">
+                            <p className="text-[1.1vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
+                            {/* NB: Add Content Rating based on Movie ID */}
+                            <p className="border-white border-2 rounded-md font-bold text-[0.9vw] p-0.5">PG-13</p>
+                        </div>
+                        {/* Movie Tagline */}
+                        <p className="italic text-gray-400 text-[1.05vw]">{movie.tagline}</p>
+                        {/* Movie Overview */}
+                        <p className="text-[1.2vw] font-bold mt-1">Overview</p>
+                        <p className="text-[1.1vw] line-clamp-3">{movie.overview}</p>
+                        {/* Nav Links */}
+                        <div className="flex flex-row mt-2">
+                            <p className={`cursor-pointer text-[1.05vw] ${isNavChange === "cast" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("cast")}>Casts</p>
+                            <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "media" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("media")}>Media</p>
+                            <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "reviews" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("reviews")}>Reviews</p>
+                            <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
+                        </div>
                     </div>
                     {/* Casts */}
                         
-                            <div className={isNavChange === "cast"? "block" : "hidden"}>
+                        <div className={isNavChange === "cast"? "block" : "hidden"}>
                             {
                             casts.length !== 0 ?
-                            <>
-                                <p className="text-[1.2vw] font-bold my-2">Top Casts</p>
-                                <div className="flex space-x-2 overflow-x-auto w-full">
-                                {
-                                    casts.slice(0,20).map((cast) => (
-                                        <div key={cast.id} className="flex-shrink-0 rounded-lg bg-white text-red-950 w-[8vw] h-[20vw] mb-1">
-                                            
-                                            {
-                                            // Check for the data is still being fetch
-                                            loading ? (
-                                            <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto 2xl:my-28 lg:my-18 md:my-14"></div>
-                                            ) : (
-                                            // Check is there image for the actors
-                                            cast.profile_path !== null ? (
-                                                <img 
-                                                src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`} 
-                                                alt={cast.name} 
-                                                className="rounded-t-lg" 
-                                                />
-                                            ) : (
-                                                <div className="flex justify-center items-center rounded-t-lg bg-gray-300 w-[8vw] h-[12vw] "><p className="font-bold text-center text-gray-600 text-[1vw]">N/A</p></div>
-                                            )
-                                            )}
-                                            <p className="montserrat font-bold m-1.5 text-[1vw]">{cast.name}</p>
-                                            {
-                                                // Check is there any role for the actors
-                                                cast.character ? 
-                                                <p className="m-1.5 text-[0.9vw]">as {cast.character}</p> :
-                                                ""
-                                            }
+                                <>
+                                    <p className="text-[1.2vw] font-bold my-2">Top Casts</p>
+                                    <div className="flex space-x-2 overflow-x-auto w-full">
+                                    {
+                                        casts.slice(0,20).map((cast) => (
+                                            <div key={cast.id} className="flex-shrink-0 rounded-lg bg-white text-red-950 w-[8vw] h-[20vw] mb-1">
+                                                
+                                                {
+                                                // Check for the data is still being fetch
+                                                loading ? (
+                                                <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto 2xl:my-28 lg:my-18 md:my-14"></div>
+                                                ) : (
+                                                // Check is there image for the actors
+                                                cast.profile_path !== null ? (
+                                                    <img 
+                                                    src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`} 
+                                                    alt={cast.name} 
+                                                    className="rounded-t-lg" 
+                                                    />
+                                                ) : (
+                                                    <div className="flex justify-center items-center rounded-t-lg bg-gray-300 w-[8vw] h-[12vw] "><p className="font-bold text-center text-gray-600 text-[1vw]">N/A</p></div>
+                                                )
+                                                )}
+                                                <p className="montserrat font-bold m-1.5 text-[1vw]">{cast.name}</p>
+                                                {
+                                                    // Check is there any role for the actors
+                                                    cast.character ? 
+                                                    <p className="m-1.5 text-[0.9vw]">as {cast.character}</p> :
+                                                    ""
+                                                }
 
-                                        </div>
-                                    ))
-                                }
-                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                    </div>
                                 </>
                             :
                             <div className="flex w-full justify-center items-center">
                                 <p className="my-36 text-[2vw] font-bold">There are no cast members for this movie.</p>
                             </div>
-
-                            
                         }
-                                                    </div>
+                        </div>
                         
                     {/* Medias */}
                     <div className={isNavChange === "media" ? "block" : "hidden"}>
@@ -224,13 +230,13 @@ const MovieDetails = () => {
                             <div className="flex flex-row items-center space-y-2">
                                 <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} disabled={currentReview === 0} className="cursor-pointer mx-2" />
                                 {/* NB: Check Height */}
-                                <div className="bg-red-950 text-white border-white border-2 rounded-md p-2 w-full h-64">
+                                <div className={`bg-red-950 text-white border-white border-2 rounded-md p-2 w-full ${viewMore === false ? "h-64" : "h-[37vw]"}`}>
                                     <p><b>Author:</b> {reviews[currentReview]?.author}</p>
                                     <div className="flex flex-row justify-between items-center">
-                                        <p><b>Ratings:</b> {reviews[currentReview]?.author_details.rating} / 10</p>
+                                        <p><b>Ratings:</b> {reviews[currentReview].author_details.rating !== null ? `${reviews[currentReview].author_details.rating} / 10` : "None"}</p>
                                         <p><b>Date:</b> {formatDate(reviews[currentReview]?.created_at)}</p>
                                     </div>
-                                    <p className="mt-8 line-clamp-6 font-medium">{reviews[currentReview]?.content}</p>
+                                    <p className={`mt-8 ${viewMore === false ? "line-clamp-6" : "line-clamp-20 text-sm"} font-medium`}>{reviews[currentReview]?.content}</p>
                                 </div>
                                 <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1} className="cursor-pointer mx-2" />
                                 <i class="fa-solid fa-arrow-right cursor-pointer" onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1}></i> </div> ) :
@@ -239,10 +245,7 @@ const MovieDetails = () => {
                                 </div>
                             
                             }
-
-                            
-                            <p className="mt-2 font-bold float-right">View More</p>
-
+                            <p className="cursor-pointer mt-2 font-bold float-right" onClick={handleClickViewMore}>{viewMore === false ? "View More" : "View Less"}</p>
                     </div>
 
                     {/* Details */}

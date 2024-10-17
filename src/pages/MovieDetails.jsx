@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faHome, faLink, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faHome, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import { formatRuntime, formatDate } from '../Utils';
 import { faFacebook, faXTwitter, faInstagram, faImdb } from '@fortawesome/free-brands-svg-icons';
 

@@ -59,7 +59,6 @@ const MovieDetails = () => {
               setCasts(castData.cast);
               setMedias(mediaData.results);
               setReviews(reviewsData.results);
-              console.log(reviews)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -146,9 +145,11 @@ const MovieDetails = () => {
                         <p className={`cursor-pointer text-[1.05vw] ml-8 ${isNavChange === "details" ? "border-b-2" : ""}`} onClick={() => handleClickNavChange("details")}>Details</p>
                     </div>
                     {/* Casts */}
-                        {
-                            casts.length !== 0 ?
+                        
                             <div className={isNavChange === "cast"? "block" : "hidden"}>
+                            {
+                            casts.length !== 0 ?
+                            <>
                                 <p className="text-[1.2vw] font-bold my-2">Top Casts</p>
                                 <div className="flex space-x-2 overflow-x-auto w-full">
                                 {
@@ -183,13 +184,15 @@ const MovieDetails = () => {
                                     ))
                                 }
                                 </div>
-                            </div>
-                             :
+                                </>
+                            :
                             <div className="flex w-full justify-center items-center">
                                 <p className="my-36 text-[2vw] font-bold">There are no cast members for this movie.</p>
                             </div>
+
                             
                         }
+                                                    </div>
                         
                     {/* Medias */}
                     <div className={isNavChange === "media" ? "block" : "hidden"}>
@@ -215,7 +218,10 @@ const MovieDetails = () => {
                     {/* Reviews */}
                     <div className={isNavChange === "reviews" ? "block" : "hidden"}>
                         <p className="text-[1.2vw] font-bold my-2">Movie Reviews</p>
-                        <div className="flex flex-row items-center space-y-2">
+                        {
+                            loading?
+                            <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> : reviews.length !== 0 ? (
+                            <div className="flex flex-row items-center space-y-2">
                                 <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} disabled={currentReview === 0} className="cursor-pointer mx-2" />
                                 {/* NB: Check Height */}
                                 <div className="bg-red-950 text-white border-white border-2 rounded-md p-2 w-full h-64">
@@ -224,11 +230,15 @@ const MovieDetails = () => {
                                         <p><b>Ratings:</b> {reviews[currentReview]?.author_details.rating} / 10</p>
                                         <p><b>Date:</b> {formatDate(reviews[currentReview]?.created_at)}</p>
                                     </div>
-                                    <p className="mt-8 line-clamp-6 font-medium text-justify">{reviews[currentReview]?.content}</p>
+                                    <p className="mt-8 line-clamp-6 font-medium">{reviews[currentReview]?.content}</p>
                                 </div>
                                 <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1} className="cursor-pointer mx-2" />
-                                <i class="fa-solid fa-arrow-right cursor-pointer" onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1}></i>
+                                <i class="fa-solid fa-arrow-right cursor-pointer" onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1}></i> </div> ) :
+                                <div className="flex w-full justify-center items-center">
+                                        <p className="my-36 text-[2vw] font-bold">There are no reviews for this movie yet.</p>
                                 </div>
+                            
+                            }
 
                             
                             <p className="mt-2 font-bold float-right">View More</p>

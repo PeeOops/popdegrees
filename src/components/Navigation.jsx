@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import Logo from '../assets/logo.png';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 
 const Navigation = () => {
 
     const [isToggle, setIsToggle] = useState(false);
+    const location = useLocation();
 
     // Toggle Mobile Navigation Links
     const handleClickToggle = () =>{
@@ -69,16 +70,16 @@ const Navigation = () => {
                         className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-red-950 md:items-center">
                         <li>
                             <Link to="/"
-                                className="block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2"
-                                aria-current="page">Home</Link>
+                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2`}
+                                aria-current={`${location.pathname === "/" ? "page" : ""}`}>Home</Link>
                         </li>
                         <li>
                             <Link to="/movies"
-                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">Movies</Link>
+                                className="border-red-950 border-2 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white" aria-current={`${location.pathname === "/movies" ? "page" : ""}`}>Movies</Link>
                         </li>
                         <li>
                             <Link to="/series"
-                                className="border-2 border-red-950 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white">TV Series</Link>
+                                className="border-red-950 border-2 block py-2 px-3 text-red-950 rounded mt-2 hover:bg-yellow-300 md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white" aria-current={`${location.pathname === "/" ? "/series" : ""}`}>TV Series</Link>
                         </li>
                     </ul>
                 </div>

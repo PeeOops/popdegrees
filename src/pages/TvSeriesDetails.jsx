@@ -63,7 +63,6 @@ const TvSeriesDetails = () => {
                 setMedias(videosURL.results);
                 setExternalId(externalURL);
                 setReviews(reviewsURL.results);
-                console.log(tvDetailsURL);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -208,19 +207,19 @@ const TvSeriesDetails = () => {
                         
                     {/* Medias */}
                     <div className={isNavChange === "media" ? "block" : "hidden"}>
-                        <p className="text-[1.2vw] font-bold my-2">{medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? "Series Media" : ""}</p>
+                        <p className="text-[1.2vw] font-bold my-2">{medias.filter(media => media.type === "Teaser" || media.type === "Trailer" || media.type === "Opening Credits").length > 0 ? "Series Media" : ""}</p>
                         <div className="flex flex-row space-x-2 overflow-x-auto mt-2">
                             {
                                 // Check for the data is still being fetch
                                 loading ?
                                 <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> :
                                 // Filter to show only Teaser and Trailer Series
-                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? (medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => ( 
+                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer" || media.type === "Opening Credits").length > 0 ? (medias.filter(media => media.type === "Teaser" || media.type === "Trailer" || media.type === "Opening Credits").map((media) => ( 
                                         <iframe key={media.key} className="w-full h-[20vw] aspect-video lazyload mb-1" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
                                     ))) :
                                     // Check if there is no trailer
                                     <div className="flex w-full justify-center items-center">
-                                        <p className="my-36 text-[2vw] font-bold">There are no trailers for this series yet.</p>
+                                        <p className="my-36 text-[2vw] font-bold">There are no medias for this series yet.</p>
                                     </div>
                             }
                         </div>

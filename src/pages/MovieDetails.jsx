@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faLink, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import formatDate from '../Utils';
+import { faFacebook, faXTwitter, faInstagram, faImdb } from '@fortawesome/free-brands-svg-icons';
 
 
 
@@ -17,6 +18,7 @@ const MovieDetails = () => {
     const [casts, setCasts] = useState([]);
     const [medias, setMedias] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [externalId, setExternalId] = useState({});
     const [currentReview, setCurrentReview] = useState(0);
     // NB: Show Error
     const [error, setError] = useState('');
@@ -30,7 +32,7 @@ const MovieDetails = () => {
         // Fetch Movie Data
         const fetchData = async () => {
             try {
-              const [movieData, castData, mediaData, reviewsData] = await Promise.all([
+              const [movieDataURL, castDataURL, mediaDataURL, reviewsDataURL, externalURL] = await Promise.all([
                 fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
@@ -54,12 +56,20 @@ const MovieDetails = () => {
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
-                })
+                }),
+                fetch(`${BASE_URL}/movie/${id}/external_ids?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
               ]);
-              setMovie(movieData);
-              setCasts(castData.cast);
-              setMedias(mediaData.results);
-              setReviews(reviewsData.results);
+              setMovie(movieDataURL);
+              setCasts(castDataURL.cast);
+              setMedias(mediaDataURL.results);
+              setReviews(reviewsDataURL.results);
+              setExternalId(externalURL);
+              console.log(externalId)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -250,13 +260,22 @@ const MovieDetails = () => {
 
                     {/* Details */}
                     <div className={isNavChange === "details" ? "block" : "hidden"}>
-                        <p className="mt-2 text-lg font-bold">Movie Details</p>
-                        <div className="flex flex-row space-x-4 text-2xl mt-2 items-center">
-                            <i className="fa-brands fa-x-twitter"></i>
-                            <i className="fa-brands fa-instagram"></i>
-                            <i className="fa-brands fa-facebook"></i>
-                            <div className="w-0.5 h-8 bg-white"></div>
-                            <i class="fa-solid fa-link"></i>
+                        <p className="text-[1.2vw] font-bold my-2">Movie Details</p>
+                        <div className="flex flex-row items-center space-x-4 text-[1.8vw] mt-2 ">
+                            {/* Social Media Links */}
+                            <a href={`https://twitter.com/intent/user?user_id=${externalId?.twitter_id}`} target="_blank">
+                                <FontAwesomeIcon icon={faXTwitter} />
+                            </a>
+                            <a href={`https://www.instagram.com/${externalId?.instagram_id}/`} target="_blank">
+                                <FontAwesomeIcon icon={faInstagram} />
+                            </a>
+                            <a href={`https://www.facebook.com/${externalId?.facebook_id}`} target="_blank">
+                                <FontAwesomeIcon icon={faFacebook} />
+                            </a>
+                            <div className="w-0.5 h-[2vw] bg-white"></div>
+                            <a href={`https://www.imdb.com/title/${externalId?.imdb_id}/`} target="_blank">
+                                <FontAwesomeIcon icon={faImdb} />
+                            </a>
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-8">
                             <p className="font-bold">Status: </p>

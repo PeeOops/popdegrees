@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faLink, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faHome, faLink, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import { formatRuntime, formatDate } from '../Utils';
 import { faFacebook, faXTwitter, faInstagram, faImdb } from '@fortawesome/free-brands-svg-icons';
 
@@ -69,6 +69,7 @@ const MovieDetails = () => {
               setMedias(mediaDataURL.results);
               setReviews(reviewsDataURL.results);
               setExternalId(externalURL);
+              console.log(movie)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -211,15 +212,14 @@ const MovieDetails = () => {
                         
                     {/* Medias */}
                     <div className={isNavChange === "media" ? "block" : "hidden"}>
-                        <p className="text-[1.2vw] font-bold my-2">Movie Medias</p>
+                        <p className="text-[1.2vw] font-bold my-2">{medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? "Movies Media" : ""}</p>
                         <div className="flex flex-row space-x-2 overflow-x-auto mt-2">
                             {
                                 // Check for the data is still being fetch
                                 loading ?
                                 <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> :
                                 // Filter to show only Teaser and Trailer Movies
-                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? (
-                                    medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => ( 
+                                medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? (medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => ( 
                                         <iframe key={media.key} className="w-full h-[20vw] aspect-video lazyload mb-1" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
                                     ))) :
                                     // Check if there is no trailer
@@ -232,10 +232,11 @@ const MovieDetails = () => {
 
                     {/* Reviews */}
                     <div className={isNavChange === "reviews" ? "block" : "hidden"}>
-                        <p className="text-[1.2vw] font-bold my-2">Movie Reviews</p>
                         {
                             loading?
                             <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> : reviews.length !== 0 ? (
+                            <>
+                            <p className="text-[1.2vw] font-bold my-2">Movie Reviews</p>
                             <div className="flex flex-row items-center space-y-2">
                                 <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} className={`cursor-pointer mx-2 ${currentReview === 0 ? "cursor-not-allowed" : ""}`} />
                                 {/* NB: Check Height */}
@@ -248,11 +249,13 @@ const MovieDetails = () => {
                                     <p className={`mt-8 ${viewMore === false ? "line-clamp-6" : "line-clamp-20 text-sm"} font-medium`}>{reviews[currentReview]?.content}</p>
                                 </div>
                                 <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} className={`cursor-pointer mx-2 ${currentReview === reviews.length - 1 ? "cursor-not-allowed" : ""}`} />
-                                </div> ) :
+                                </div> 
+                                </>
+                                ) :
                                 <div className="flex w-full justify-center items-center">
                                         <p className="my-36 text-[2vw] font-bold">There are no reviews for this movie yet.</p>
-                                </div>
-                            
+                            </div>
+
                             }
                             <p className="cursor-pointer mt-2 font-bold float-right" onClick={handleClickViewMore}>{viewMore === false ? "View More" : "View Less"}</p>
                     </div>
@@ -275,6 +278,11 @@ const MovieDetails = () => {
                             <a href={`https://www.imdb.com/title/${externalId?.imdb_id}/`} target="_blank">
                                 <FontAwesomeIcon icon={faImdb} />
                             </a>
+                            { movie.homepage ?
+                            <a href={movie.homepage}target="_blank">
+                                <FontAwesomeIcon icon={faHome} />
+                            </a> : ""
+                            }   
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Status: </p>

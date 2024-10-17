@@ -1,3 +1,4 @@
+// Date format for reviews
 const formatDate = (dateString) => {
     const date = new Date(dateString);
 
@@ -23,4 +24,16 @@ const formatDate = (dateString) => {
     return `${day}${getDaySuffix(day)} ${month} ${year}`;
 }
 
-export default formatDate;
+// Runtime format for movie runtime
+
+const formatRuntime = (time) => {
+  const hours = Math.floor(time/60);
+  const minutes = time & 60;
+
+  const formattedHours = String(hours).padStart(2,'0');
+  const formattedMinutes = String(minutes).padStart(2,'0');
+
+  return `${formattedHours}:${formattedMinutes}`;
+}
+
+export {formatDate, formatRuntime};

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faLink, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
-import formatDate from '../Utils';
+import { formatRuntime, formatDate } from '../Utils';
 import { faFacebook, faXTwitter, faInstagram, faImdb } from '@fortawesome/free-brands-svg-icons';
 
 
@@ -69,7 +69,6 @@ const MovieDetails = () => {
               setMedias(mediaDataURL.results);
               setReviews(reviewsDataURL.results);
               setExternalId(externalURL);
-              console.log(externalId)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -238,7 +237,7 @@ const MovieDetails = () => {
                             loading?
                             <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> : reviews.length !== 0 ? (
                             <div className="flex flex-row items-center space-y-2">
-                                <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} disabled={currentReview === 0} className="cursor-pointer mx-2" />
+                                <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} className={`cursor-pointer mx-2 ${currentReview === 0 ? "cursor-not-allowed" : ""}`} />
                                 {/* NB: Check Height */}
                                 <div className={`bg-red-950 text-white border-white border-2 rounded-md p-2 w-full ${viewMore === false ? "h-64" : "h-[37vw]"}`}>
                                     <p><b>Author:</b> {reviews[currentReview]?.author}</p>
@@ -248,8 +247,8 @@ const MovieDetails = () => {
                                     </div>
                                     <p className={`mt-8 ${viewMore === false ? "line-clamp-6" : "line-clamp-20 text-sm"} font-medium`}>{reviews[currentReview]?.content}</p>
                                 </div>
-                                <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1} className="cursor-pointer mx-2" />
-                                <i class="fa-solid fa-arrow-right cursor-pointer" onClick={handleClickNextReview} disabled={currentReview === reviews.length - 1}></i> </div> ) :
+                                <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} className={`cursor-pointer mx-2 ${currentReview === reviews.length - 1 ? "cursor-not-allowed" : ""}`} />
+                                </div> ) :
                                 <div className="flex w-full justify-center items-center">
                                         <p className="my-36 text-[2vw] font-bold">There are no reviews for this movie yet.</p>
                                 </div>
@@ -277,22 +276,31 @@ const MovieDetails = () => {
                                 <FontAwesomeIcon icon={faImdb} />
                             </a>
                         </div>
-                        <div className="flex flex-row space-x-2 items-center mt-8">
+                        <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Status: </p>
                             <p>{movie.status}</p>
                         </div>
-                        <div className="flex flex-row space-x-2 items-center mt-2">
+                        <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
+                            <p className="font-bold">Runtime: </p>
+                            <p>{formatRuntime(movie.runtime)}</p>
+                        </div>
+                        <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Original Language: </p>
                             <p>{movie.original_language?.toUpperCase()}</p>
                         </div>
 
-                        <div className="flex flex-row space-x-2 items-center mt-2">
+                        <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Budget: </p>
                             <p>${movie.budget?.toLocaleString()}</p>
                         </div>
-                        <div className="flex flex-row space-x-2 items-center mt-2">
+                        <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Revenue: </p>
                             <p>${movie.revenue ? movie.revenue.toLocaleString() : '-'}</p>
+                        </div>
+                        <div className="flex flex-col mt-2 text-[1.2vw]">
+                            <p className="font-bold">Production Companies: </p>
+                            <p>{movie.production_companies?.map((company) => company.name).join(', ')}
+                            </p>
                         </div>
 
 

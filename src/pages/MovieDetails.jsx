@@ -19,6 +19,7 @@ const MovieDetails = () => {
     const [medias, setMedias] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [externalId, setExternalId] = useState({});
+    const [releaseDate, setReleaseDate] = useState([]);
     const [currentReview, setCurrentReview] = useState(0);
     // NB: Show Error
     const [error, setError] = useState('');
@@ -32,7 +33,7 @@ const MovieDetails = () => {
         // Fetch Movie Data
         const fetchData = async () => {
             try {
-              const [movieDataURL, castDataURL, mediaDataURL, reviewsDataURL, externalURL] = await Promise.all([
+              const [movieDataURL, castDataURL, mediaDataURL, reviewsDataURL, externalURL, releaseDateURL] = await Promise.all([
                 fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
@@ -63,12 +64,23 @@ const MovieDetails = () => {
                     }
                     return res.json();
                 }),
+                fetch(`${BASE_URL}/movie/${id}/release_dates?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
+                
               ]);
               setMovie(movieDataURL);
               setCasts(castDataURL.cast);
               setMedias(mediaDataURL.results);
               setReviews(reviewsDataURL.results);
               setExternalId(externalURL);
+              setReleaseDate(releaseDateURL.results
+                .filter(item => item.iso_3166_1 === "ID")
+                .flatMap(item => item.release_dates.map(date => date.release_date))
+                .pop());
             } catch (error) {
               setError(error.message);
             } finally {
@@ -289,6 +301,10 @@ const MovieDetails = () => {
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Status: </p>
                             <p>{movie.status}</p>
+                        </div>
+                        <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
+                            <p className="font-bold">Release Date: </p>
+                            <p>{releaseDate !== undefined ? formatDate(releaseDate) : "Not available in this country / Not Confirmed Yet"}</p>
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Runtime: </p>

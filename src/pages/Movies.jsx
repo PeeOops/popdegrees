@@ -91,8 +91,6 @@ const Movies = () => {
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Popular</li>
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Top Rated</li>
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Upcoming</li>
-
-                        
                     </ul>
 
 

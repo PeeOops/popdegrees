@@ -256,7 +256,10 @@ const MovieDetails = () => {
                             </div>
 
                             }
-                            <p className="cursor-pointer mt-2 font-bold float-right" onClick={handleClickViewMore}>{viewMore === false ? "View More" : "View Less"}</p>
+                            {
+                                reviews.length !== 0 ? <p className="cursor-pointer mt-2 font-bold float-right" onClick={handleClickViewMore}>{viewMore === false ? "View More" : "View Less"}</p> : ""
+                            }
+                            
                     </div>
 
                     {/* Details */}

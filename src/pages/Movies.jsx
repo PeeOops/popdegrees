@@ -85,6 +85,17 @@ const Movies = () => {
                     <p className="mt-4 font-bold">Release Year</p>
                     <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" max={new Date().getFullYear()} />
 
+                    <p className="mt-4 font-bold">Lists</p>
+                    <ul className="space-y-2 mt-2">
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Now Playing</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Popular</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Top Rated</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Upcoming</li>
+
+                        
+                    </ul>
+
+
 
 
                 </div>

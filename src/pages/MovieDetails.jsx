@@ -7,7 +7,7 @@ import { faFacebook, faXTwitter, faInstagram, faImdb } from '@fortawesome/free-b
 
 
 
-const API_KEY = 'cbfc56177fc1d8965e8f21499c9b3ff0';
+const API_KEY = process.env.API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 const MovieDetails = () => {
@@ -69,7 +69,6 @@ const MovieDetails = () => {
               setMedias(mediaDataURL.results);
               setReviews(reviewsDataURL.results);
               setExternalId(externalURL);
-              console.log(movie)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -220,7 +219,7 @@ const MovieDetails = () => {
                                 <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> :
                                 // Filter to show only Teaser and Trailer Movies
                                 medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? (medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => ( 
-                                        <iframe key={media.key} className="w-full h-[20vw] aspect-video lazyload mb-1" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
+                                        <iframe key={media.key} className="w-full h-[25vw] aspect-video lazyload mb-1" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
                                     ))) :
                                     // Check if there is no trailer
                                     <div className="flex w-full justify-center items-center">

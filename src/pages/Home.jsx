@@ -5,7 +5,7 @@ import Hero from '../assets/hero.jpg';
 import Film from '../assets/film.svg'
 import { Link } from "react-router-dom";
 
-const API_KEY = 'cbfc56177fc1d8965e8f21499c9b3ff0';
+const API_KEY = process.env.API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 const POPULAR_SERIES_URL = `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
 

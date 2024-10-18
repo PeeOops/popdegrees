@@ -20,7 +20,9 @@ const Movies = () => {
 
     useEffect(() => {
 
+        // queryParams search the URL for location.search examples "https://movies?page=2" = "?page=2"
         const queryParams = new URLSearchParams(location.search);
+        // pageFromUrl output will be "2" or "1" as default page
         const pageFromUrl = parseInt(queryParams.get('page')) || 1;
         setPage(pageFromUrl);
 
@@ -51,7 +53,7 @@ const Movies = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search], page)
+    },[location.search])
 
     const handleNextPageButton = () => {
         const nextPage = page + 1;
@@ -68,7 +70,7 @@ const Movies = () => {
     return(
         <div>
             <Navigation />
-            <div className="flex montserrat p-8">
+            <div className="flex montserrat pt-8 pl-8 pr-8">
                 {/* Filter Side */}
 
                 <div className="w-1/4 bg-red-950 text-white p-4 rounded-md">

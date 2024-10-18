@@ -59,6 +59,12 @@ const Movies = () => {
         navigate(`/movies?page=${nextPage}`); 
     }
 
+    const handlePreviousPageButton = () => {
+        const prevPage = page - 1;
+        setPage(prevPage);
+        navigate(`/movies?page=${prevPage}`);
+    }
+
     return(
         <div>
             <Navigation />
@@ -95,7 +101,7 @@ const Movies = () => {
                     </div>
                     
                     <div className="flex justify-between ml-6">
-                        <button className={`bg-red-950 text-white p-2 rounded-md hover:text-yellow-300 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`} disabled={page === 1}>Prev</button>
+                        <button className={`bg-red-950 text-white p-2 rounded-md hover:text-yellow-300 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`} disabled={page === 1} onClick={handlePreviousPageButton}>Prev</button>
                         <button className="bg-red-950 text-white p-2 rounded-md cursor-pointer hover:text-yellow-300" onClick={handleNextPageButton}>Next</button>
                     </div>
                 </div>

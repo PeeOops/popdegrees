@@ -40,7 +40,6 @@ const TvSeries = () => {
                 ])
                 setGenres(genresURL.genres);
                 setTvSeries(seriesURL.results);
-                console.log(genresURL)
             } catch (error) {
                 setError(error.message);
             } finally {

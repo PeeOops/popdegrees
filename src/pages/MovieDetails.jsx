@@ -22,6 +22,7 @@ const MovieDetails = () => {
     const [releaseDate, setReleaseDate] = useState([]);
     const [currentReview, setCurrentReview] = useState(0);
     const [certification, setCertification] = useState([]);
+    const [languages, setLanguages] = useState([]);
     // NB: Show Error
     const [error, setError] = useState('');
     // NB: Make loading for each fetch? if necessary
@@ -34,7 +35,7 @@ const MovieDetails = () => {
         // Fetch Movie Data
         const fetchData = async () => {
             try {
-              const [movieDataURL, castDataURL, mediaDataURL, reviewsDataURL, externalURL, releaseDateURL] = await Promise.all([
+              const [movieDataURL, castDataURL, mediaDataURL, reviewsDataURL, externalURL, releaseDateURL, languageURL] = await Promise.all([
                 fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
@@ -71,6 +72,12 @@ const MovieDetails = () => {
                     }
                     return res.json();
                 }),
+                fetch(`${BASE_URL}/configuration/languages?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
                 
               ]);
               setMovie(movieDataURL);
@@ -83,6 +90,7 @@ const MovieDetails = () => {
                 .flatMap(item => item.release_dates.map(date => date.release_date))
                 .pop());
               setCertification(releaseDateURL.results.filter(item => item.iso_3166_1 === "US").flatMap(item => item.release_dates.map(cert => cert.certification)).pop());
+              setLanguages(languageURL);
             } catch (error) {
               setError(error.message);
             } finally {
@@ -331,7 +339,9 @@ const MovieDetails = () => {
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Original Language: </p>
-                            <p>{movie.original_language?.toUpperCase()}</p>
+                            <p>{languages.some(language => language.iso_639_1.toLowerCase() === movie.original_language.toLowerCase())
+                            ? languages.filter(language => language.iso_639_1.toLowerCase() === movie.original_language.toLowerCase()).map(language => language.english_name)
+                            : ""}</p>
                         </div>
 
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">

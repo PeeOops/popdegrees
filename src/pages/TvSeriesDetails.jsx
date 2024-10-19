@@ -16,6 +16,8 @@ const TvSeriesDetails = () => {
     const [medias, setMedias] = useState([]);
     const [externalId, setExternalId] = useState({});
     const [reviews, setReviews] = useState([]);
+    const [certificates, setCertificates] = useState([]);
+    const [languages, setLanguages] = useState([]);
     const [currentReview, setCurrentReview] = useState(0);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -26,7 +28,7 @@ const TvSeriesDetails = () => {
         setLoading(true);
         const fetchData = async () => {
             try {
-                const [tvDetailsURL, creditsURL, videosURL, externalURL, reviewsURL] = await Promise.all([
+                const [tvDetailsURL, creditsURL, videosURL, externalURL, reviewsURL, certificateURL, languageURL] = await Promise.all([
                 fetch(`${BASE_URL}/tv/${id}?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
@@ -56,13 +58,28 @@ const TvSeriesDetails = () => {
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
-                })
+                }),
+                fetch(`${BASE_URL}/tv/${id}/content_ratings?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
+                fetch(`${BASE_URL}/configuration/languages?api_key=${API_KEY}`).then((res) => {
+                    if(!res.ok){
+                        throw new Error("Fetch data failed");
+                    }
+                    return res.json();
+                }),
             ]);
                 setSeries(tvDetailsURL);
                 setCasts(creditsURL.cast);
                 setMedias(videosURL.results);
                 setExternalId(externalURL);
                 setReviews(reviewsURL.results);
+                setCertificates(certificateURL.results);
+                setLanguages(languageURL);
+                console.log(tvDetailsURL)
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -142,7 +159,7 @@ const TvSeriesDetails = () => {
                         <div className="flex space-x-4 items-center flex-row">
                             <p className="text-[1.1vw]">{series.genres?.map((genre) => genre.name).join(', ')}</p>
                             {/* NB: Add Content Rating based on Series ID */}
-                            <p className="border-white border-2 rounded-md font-bold text-[0.9vw] p-0.5">PG-13</p>
+                            <p className="border-white border-2 font-bold text-[0.9vw] p-0.5 pr-1 pl-1">{certificates.filter((certificate) => certificate.iso_3166_1 === "US").map((certificate) => certificate.rating)}</p>
                         </div>
                         {/* Series Tagline */}
                         <p className="italic text-gray-400 text-[1.05vw]">{series.tagline}</p>
@@ -262,44 +279,71 @@ const TvSeriesDetails = () => {
                         <p className="text-[1.2vw] font-bold my-2">Series Details</p>
                         <div className="flex flex-row items-center space-x-4 text-[1.8vw] mt-2 ">
                             {/* Social Media Links */}
-                            <a href={`https://twitter.com/intent/user?user_id=${externalId?.twitter_id}`} target="_blank">
-                                <FontAwesomeIcon icon={faXTwitter} />
-                            </a>
-                            <a href={`https://www.instagram.com/${externalId?.instagram_id}/`} target="_blank">
-                                <FontAwesomeIcon icon={faInstagram} />
-                            </a>
-                            <a href={`https://www.facebook.com/${externalId?.facebook_id}`} target="_blank">
-                                <FontAwesomeIcon icon={faFacebook} />
-                            </a>
-                            <div className="w-0.5 h-[2vw] bg-white"></div>
-                            <a href={`https://www.imdb.com/title/${externalId?.imdb_id}/`} target="_blank">
+                            {
+                                externalId.twitter_id ? 
+                                <a href={`https://twitter.com/intent/user?user_id=${externalId.twitter_id}`} target="_blank">
+                                    <FontAwesomeIcon icon={faXTwitter} />
+                                </a> : ""
+                            }
+                            {
+                                externalId.instagram_id ?
+                                <a href={`https://www.instagram.com/${externalId.instagram_id}/`} target="_blank">
+                                    <FontAwesomeIcon icon={faInstagram} />
+                                </a> : ""
+                            }
+                            {
+                                externalId.facebook_id ?
+                                <a href={`https://www.facebook.com/${externalId.facebook_id}`} target="_blank">
+                                    <FontAwesomeIcon icon={faFacebook} />
+                                </a> : ""
+                            }
+                            {
+                                externalId.instagram_id || externalId.facebook_id || externalId.twitter_id ?
+                                <div className="w-0.5 h-[2vw] bg-white"></div> : ""
+                            }
+                            
+                            {
+                                externalId.imdb_id ? 
+                                <a href={`https://www.imdb.com/title/${externalId.imdb_id}/`} target="_blank">
                                 <FontAwesomeIcon icon={faImdb} />
-                            </a>
-                            { series.homepage ?
-                            <a href={series.homepage}target="_blank">
-                                <FontAwesomeIcon icon={faHome} />
-                            </a> : ""
-                            }   
+                                </a> : ""
+                            }
+                            
+                            { 
+                                series.homepage ?
+                                <a href={series.homepage}target="_blank">
+                                    <FontAwesomeIcon icon={faHome} />
+                                </a> : ""
+                            }      
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.2vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
                             <p className="font-bold">Status:</p>
                             <p>{series.status}</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.2vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
                             <p className="font-bold">Seasons:</p>
                             <p>{series.number_of_seasons} with {series.number_of_episodes} episodes.</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.2vw]">
-                            <p className="font-bold">Original Language:</p>
-                            <p>{series.original_language?.toUpperCase()}</p>
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                            <p className="font-bold">First Air Date:</p>
+                            <p>{series.first_air_date ? formatDate(series.first_air_date) : "Not available in this country / Not Confirmed Yet"}</p>
                         </div>
-
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.2vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                            <p className="font-bold">Last Air Date:</p>
+                            <p>{series.last_air_date ? formatDate(series.last_air_date) : "Not available in this country / Not Confirmed Yet"}</p>
+                        </div>
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
                             <p className="font-bold">Next Episodes to Air:</p>
-                            <p>{series.next_episode_to_air ? formatDate(series.next_episode_to_air.air_date) : "No upcoming episodes."}</p>
+                            <p>{series.next_episode_to_air ? formatDate(series.next_episode_to_air.air_date) : series.status === "Ended" ? "Ended" : "No upcoming episodes."}</p>
 
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.2vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                            <p className="font-bold">Original Language:</p>
+                            <p>{languages.some(language => language.iso_639_1.toLowerCase() === series.original_language.toLowerCase())
+                            ? languages.filter(language => language.iso_639_1.toLowerCase() === series.original_language.toLowerCase()).map(language => language.english_name)
+                            : ""}</p>
+                        </div>
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
                             <p className="font-bold">Spoken Languages:</p>
                             <p>{series.spoken_languages?.map((language) => 
                                 language.name 
@@ -307,10 +351,8 @@ const TvSeriesDetails = () => {
                                     : language.english_name
                                 ).join(', ')}</p>
                         </div>
-                        <div className="flex flex-col mt-2 text-[1.2vw]">
-                            <p className="font-bold">Production Companies:</p>
-                            <p>{series.production_companies?.map((company) => company.name).join(', ')}
-                            </p>
+                        <div className="flex flex-col mt-2 text-[1vw]">
+                            <p><b>Production Companies:</b> {series.production_companies ? series.production_companies.map((company) => company.name).join(', ') : "-"}</p>
                         </div>
 
 

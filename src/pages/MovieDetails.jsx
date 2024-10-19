@@ -21,6 +21,7 @@ const MovieDetails = () => {
     const [externalId, setExternalId] = useState({});
     const [releaseDate, setReleaseDate] = useState([]);
     const [currentReview, setCurrentReview] = useState(0);
+    const [certification, setCertification] = useState([]);
     // NB: Show Error
     const [error, setError] = useState('');
     // NB: Make loading for each fetch? if necessary
@@ -81,6 +82,8 @@ const MovieDetails = () => {
                 .filter(item => item.iso_3166_1 === "ID")
                 .flatMap(item => item.release_dates.map(date => date.release_date))
                 .pop());
+              setCertification(releaseDateURL.results.filter(item => item.iso_3166_1 === "US").flatMap(item => item.release_dates.map(cert => cert.certification)).pop());
+              console.log(releaseDateURL)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -158,7 +161,7 @@ const MovieDetails = () => {
                         <div className="flex space-x-4 items-center flex-row">
                             <p className="text-[1.1vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                             {/* NB: Add Content Rating based on Movie ID */}
-                            <p className="border-white border-2 rounded-md font-bold text-[0.9vw] p-0.5">PG-13</p>
+                            <p className="border-white border-2 font-bold text-[0.9vw] p-0.5 pr-1 pl-1">{certification ? certification : "NR"}</p>
                         </div>
                         {/* Movie Tagline */}
                         <p className="italic text-gray-400 text-[1.05vw]">{movie.tagline}</p>

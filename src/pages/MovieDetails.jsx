@@ -258,7 +258,7 @@ const MovieDetails = () => {
                             <>
                             <p className="text-[1.2vw] font-bold my-2">Movie Reviews</p>
                             <div className="flex flex-row items-center space-y-2">
-                                <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} className={`cursor-pointer mx-2 ${currentReview === 0 ? "cursor-not-allowed" : ""}`} />
+                                <FontAwesomeIcon icon={faArrowLeft} onClick={handleClickPreviousReview} className={` mx-2 ${currentReview === 0 ? "cursor-not-allowed" : "cursor-pointer"}`} />
                                 {/* NB: Check Height */}
                                 <div className={`bg-red-950 text-white border-white border-2 rounded-md p-2 w-full ${viewMore === false ? "h-64" : "h-[37vw]"}`}>
                                     <p><b>Author:</b> {reviews[currentReview]?.author}</p>
@@ -268,7 +268,7 @@ const MovieDetails = () => {
                                     </div>
                                     <p className={`mt-8 ${viewMore === false ? "line-clamp-6" : "line-clamp-20 text-sm"} font-medium`}>{reviews[currentReview]?.content}</p>
                                 </div>
-                                <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} className={`cursor-pointer mx-2 ${currentReview === reviews.length - 1 ? "cursor-not-allowed" : ""}`} />
+                                <FontAwesomeIcon icon={faArrowRight} onClick={handleClickNextReview} className={` mx-2 ${currentReview === reviews.length - 1 ? "cursor-not-allowed" : "cursor-pointer"}`} />
                                 </div> 
                                 </>
                                 ) :

@@ -159,7 +159,6 @@ const MovieDetails = () => {
                         {/* Movie Genres & Certificates */}
                         <div className="flex space-x-4 items-center flex-row">
                             <p className="text-[1.1vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
-                            {/* NB: Add Content Rating based on Movie ID */}
                             <p className="border-white border-2 font-bold text-[0.9vw] p-0.5 pr-1 pl-1">{certification ? certification : "NR"}</p>
                         </div>
                         {/* Movie Tagline */}
@@ -281,23 +280,41 @@ const MovieDetails = () => {
                         <p className="text-[1.2vw] font-bold my-2">Movie Details</p>
                         <div className="flex flex-row items-center space-x-4 text-[1.8vw] mt-2 ">
                             {/* Social Media Links */}
-                            <a href={`https://twitter.com/intent/user?user_id=${externalId?.twitter_id}`} target="_blank">
-                                <FontAwesomeIcon icon={faXTwitter} />
-                            </a>
-                            <a href={`https://www.instagram.com/${externalId?.instagram_id}/`} target="_blank">
-                                <FontAwesomeIcon icon={faInstagram} />
-                            </a>
-                            <a href={`https://www.facebook.com/${externalId?.facebook_id}`} target="_blank">
-                                <FontAwesomeIcon icon={faFacebook} />
-                            </a>
-                            <div className="w-0.5 h-[2vw] bg-white"></div>
-                            <a href={`https://www.imdb.com/title/${externalId?.imdb_id}/`} target="_blank">
+                            {
+                                externalId.twitter_id ? 
+                                <a href={`https://twitter.com/intent/user?user_id=${externalId.twitter_id}`} target="_blank">
+                                    <FontAwesomeIcon icon={faXTwitter} />
+                                </a> : ""
+                            }
+                            {
+                                externalId.instagram_id ?
+                                <a href={`https://www.instagram.com/${externalId.instagram_id}/`} target="_blank">
+                                    <FontAwesomeIcon icon={faInstagram} />
+                                </a> : ""
+                            }
+                            {
+                                externalId.facebook_id ?
+                                <a href={`https://www.facebook.com/${externalId.facebook_id}`} target="_blank">
+                                    <FontAwesomeIcon icon={faFacebook} />
+                                </a> : ""
+                            }
+                            {
+                                externalId.instagram_id || externalId.facebook_id || externalId.twitter_id ?
+                                <div className="w-0.5 h-[2vw] bg-white"></div> : ""
+                            }
+                            
+                            {
+                                externalId.imdb_id ? 
+                                <a href={`https://www.imdb.com/title/${externalId.imdb_id}/`} target="_blank">
                                 <FontAwesomeIcon icon={faImdb} />
-                            </a>
-                            { movie.homepage ?
-                            <a href={movie.homepage}target="_blank">
-                                <FontAwesomeIcon icon={faHome} />
-                            </a> : ""
+                                </a> : ""
+                            }
+                            
+                            { 
+                                movie.homepage ?
+                                <a href={movie.homepage}target="_blank">
+                                    <FontAwesomeIcon icon={faHome} />
+                                </a> : ""
                             }   
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
@@ -309,7 +326,7 @@ const MovieDetails = () => {
                             <p>{releaseDate !== undefined ? formatDate(releaseDate) : "Not available in this country / Not Confirmed Yet"}</p>
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
-                            <p className="font-bold">Runtime: </p>
+                            <p className="font-bold">Total Runtime: </p>
                             <p>{formatRuntime(movie.runtime)}</p>
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
@@ -326,8 +343,8 @@ const MovieDetails = () => {
                             <p>${movie.revenue ? movie.revenue.toLocaleString() : '-'}</p>
                         </div>
                         <div className="flex flex-col mt-2 text-[1.2vw]">
-                            <p className="font-bold">Production Companies: </p>
-                            <p>{movie.production_companies?.map((company) => company.name).join(', ')}
+                            <p><b>Production Companies:</b> {movie.production_companies?.map((company) => company.name).join(', ')} </p>
+                            <p>
                             </p>
                         </div>
 

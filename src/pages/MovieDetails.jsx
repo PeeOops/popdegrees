@@ -336,11 +336,11 @@ const MovieDetails = () => {
 
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Budget: </p>
-                            <p>${movie.budget?.toLocaleString()}</p>
+                            <p>{movie.budget ? `$${movie.budget.toLocaleString()}` : "-"}</p>
                         </div>
                         <div className="flex flex-row space-x-2 items-center mt-2 text-[1.2vw]">
                             <p className="font-bold">Revenue: </p>
-                            <p>${movie.revenue ? movie.revenue.toLocaleString() : '-'}</p>
+                            <p>{movie.revenue ? `$${movie.revenue.toLocaleString()}` : "-"}</p>
                         </div>
                         <div className="flex flex-col mt-2 text-[1.2vw]">
                             <p><b>Production Companies:</b> {movie.production_companies?.map((company) => company.name).join(', ')} </p>

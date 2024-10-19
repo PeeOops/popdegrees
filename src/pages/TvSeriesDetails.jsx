@@ -35,7 +35,7 @@ const TvSeriesDetails = () => {
                     }
                     return res.json();
                 }),
-                fetch(`${BASE_URL}/tv/${id}/credits?api_key=${API_KEY}`).then((res) => {
+                fetch(`${BASE_URL}/tv/${id}/aggregate_credits?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
@@ -79,7 +79,6 @@ const TvSeriesDetails = () => {
                 setReviews(reviewsURL.results);
                 setCertificates(certificateURL.results);
                 setLanguages(languageURL);
-                console.log(tvDetailsURL)
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -205,8 +204,8 @@ const TvSeriesDetails = () => {
                                                 <p className="montserrat font-bold m-1.5 text-[1vw]">{cast.name}</p>
                                                 {
                                                     // Check is there any role for the actors
-                                                    cast.character ? 
-                                                    <p className="m-1.5 text-[0.9vw]">as {cast.character}</p> :
+                                                    cast.roles ? 
+                                                    <p className="m-1.5 text-[0.9vw]">as {cast.roles.map((role) => role.character)}</p> :
                                                     ""
                                                 }
 
@@ -316,34 +315,34 @@ const TvSeriesDetails = () => {
                                 </a> : ""
                             }      
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">Status:</p>
                             <p>{series.status}</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">Seasons:</p>
                             <p>{series.number_of_seasons} with {series.number_of_episodes} episodes.</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">First Air Date:</p>
                             <p>{series.first_air_date ? formatDate(series.first_air_date) : "Not available in this country / Not Confirmed Yet"}</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">Last Air Date:</p>
                             <p>{series.last_air_date ? formatDate(series.last_air_date) : "Not available in this country / Not Confirmed Yet"}</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">Next Episodes to Air:</p>
                             <p>{series.next_episode_to_air ? formatDate(series.next_episode_to_air.air_date) : series.status === "Ended" ? "Ended" : "No upcoming episodes."}</p>
 
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">Original Language:</p>
                             <p>{languages.some(language => language.iso_639_1.toLowerCase() === series.original_language.toLowerCase())
                             ? languages.filter(language => language.iso_639_1.toLowerCase() === series.original_language.toLowerCase()).map(language => language.english_name)
                             : ""}</p>
                         </div>
-                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1vw]">
+                        <div className="flex flex-row space-x-1 items-center mt-2 text-[1.1vw]">
                             <p className="font-bold">Spoken Languages:</p>
                             <p>{series.spoken_languages?.map((language) => 
                                 language.name 
@@ -351,7 +350,7 @@ const TvSeriesDetails = () => {
                                     : language.english_name
                                 ).join(', ')}</p>
                         </div>
-                        <div className="flex flex-col mt-2 text-[1vw]">
+                        <div className="flex flex-col mt-2 text-[1.1vw]">
                             <p><b>Production Companies:</b> {series.production_companies ? series.production_companies.map((company) => company.name).join(', ') : "-"}</p>
                         </div>
 

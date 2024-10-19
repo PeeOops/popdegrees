@@ -90,9 +90,16 @@ const TvSeries = () => {
 
                 <div className="w-3/4 bg-white">
                     <div className="flex flex-wrap justify-center items-center">
-                        {
+                    {
+                        loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48 lg:my-96"></div> :
                             tvSeries.slice(0,21).map((series) => (
-                                <Link to={`/series/${series.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out inline-flex mb-2 mr-2 ml-2 w-1/6"><img  key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer " /></Link>
+                                <Link to={`/series/${series.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out inline-flex mb-2 mr-2 ml-2 w-1/6">
+                                    {
+                                        series.poster_path !== null ?
+                                        <img  key={series.id} src={`https://image.tmdb.org/t/p/w500/${series.poster_path}`} alt={series.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer " /> :
+                                        <div className="flex justify-center items-center bg-gray-300 m-auto lg:w-40 lg:h-[17.5vw]"><p className="font-bold text-center text-gray-600">N/A</p></div>
+                                    }
+                                </Link>
                             ))
                         }
                         

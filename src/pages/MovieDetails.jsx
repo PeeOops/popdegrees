@@ -214,7 +214,7 @@ const MovieDetails = () => {
                                                 {
                                                     // Check is there any role for the actors
                                                     cast.character ? 
-                                                    <p className="m-1.5 text-[0.9vw]">as {cast.character}</p> :
+                                                    <p className="m-1.5 text-[0.9vw] line-clamp-3">as {cast.character}</p> :
                                                     ""
                                                 }
 

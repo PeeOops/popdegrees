@@ -205,7 +205,7 @@ const TvSeriesDetails = () => {
                                                 {
                                                     // Check is there any role for the actors
                                                     cast.roles ? 
-                                                    <p className="m-1.5 text-[0.9vw]">as {cast.roles.map((role) => role.character)}</p> :
+                                                    <p className="m-1.5 text-[0.9vw] line-clamp-3">as {cast.roles.map((role) => role.character)}</p> :
                                                     ""
                                                 }
 

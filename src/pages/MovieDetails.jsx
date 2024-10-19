@@ -231,7 +231,7 @@ const MovieDetails = () => {
                                 <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto my-28"></div> :
                                 // Filter to show only Teaser and Trailer Movies
                                 medias.filter(media => media.type === "Teaser" || media.type === "Trailer").length > 0 ? (medias.filter(media => media.type === "Teaser" || media.type === "Trailer").map((media) => ( 
-                                        <iframe key={media.key} className="w-full h-[23vw] aspect-video lazyload mb-1" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
+                                        <iframe key={media.key} className="w-full lg:h-[20vw] 2xl:h-[23vw] aspect-video lazyload mb-1" src={`https://www.youtube.com/embed/${media.key}`}frameborder="0" title={media.name} allowFullScreen></iframe>
                                     ))) :
                                     // Check if there is no trailer
                                     <div className="flex w-full justify-center items-center">

@@ -12,6 +12,7 @@ const Movies = () => {
     const navigate = useNavigate();
     const [genres, setGenres] = useState([]);
     const [chosenGenre, setChosenGenre] = useState([]);
+    const [inputYear, setInputYear] = useState('');
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [error, setError] = useState("");
@@ -29,19 +30,32 @@ const Movies = () => {
 
         const fetchData = async (page) => {
             try {
-                const [genresURL, moviesURL] = await Promise.all([
+                const [genresURL] = await Promise.all([
                     fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => res.json()),
-                    fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`).then((res) => res.json()),
                 ]);
 
                 setGenres(genresURL.genres);
-                if (chosenGenre !== null) {
-                    const onChosenGenre = chosenGenre.join(',')
-                    const discoverURL = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&sort_by=popularity.dsc&page=${page}`).then((res) => res.json());
-                    setMovies(discoverURL.results);
+                
+                let moviesURL = '';
+
+                if (chosenGenre.length > 0 && inputYear) {
+                    // Both genre and year filters applied
+                    const onChosenGenre = chosenGenre.join(',');
+                    moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&year=${inputYear}&sort_by=popularity.dsc&page=${page}`;
+                } else if (chosenGenre.length > 0) {
+                    // Only genre filter applied
+                    const onChosenGenre = chosenGenre.join(',');
+                    moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&sort_by=popularity.dsc&page=${page}`;
+                } else if (inputYear) {
+                    // Only year filter applied
+                    moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&year=${inputYear}&sort_by=popularity.dsc&page=${page}`;
                 } else {
-                    setMovies(moviesURL.results);
+                    // No filters, get now playing
+                    moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
                 }
+
+                const discoverURL = await fetch(moviesURL).then((res) => res.json());
+                setMovies(discoverURL.results);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -51,7 +65,7 @@ const Movies = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search, chosenGenre])
+    },[location.search, chosenGenre, inputYear])
 
     const handleNextPageButton = () => {
         const nextPage = page + 1;
@@ -80,7 +94,16 @@ const Movies = () => {
     const handleClickClearFilters = () => {
         setChosenGenre([]);
         setPage(1);
+        setInputYear("");
         navigate(`/movies`);
+    }
+
+    // Enter Release Year
+    const handleClickReleaseYear = (event) => {
+        const year = parseInt(event.target.value, 10);
+        if (event.key === "Enter" && event.target.value.trim() && year > 1900 && year <= new Date().getFullYear()) {
+            setInputYear(year);
+        }
     }
 
     return(
@@ -103,8 +126,7 @@ const Movies = () => {
                     </ul>
 
                     <p className="mt-4 font-bold">Release Year</p>
-                    <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" max={new Date().getFullYear()} />
-
+                    <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" onKeyDown={handleClickReleaseYear} max={new Date().getFullYear()} />
                     <p className="mt-4 font-bold">Lists</p>
                     <ul className="space-y-2 mt-2">
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Now Playing</li>

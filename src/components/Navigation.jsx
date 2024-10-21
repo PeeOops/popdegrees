@@ -23,9 +23,9 @@ const Navigation = () => {
                     <span className="self-center text-2xl font-bold whitespace-nowrap text-white apothem">PopDegrees</span>
                 </Link>
 
-                <div className="flex md:order-2">
+                <div className={`flex md:order-2 ${currentURL === "/" ? "block md:hidden" : ""}`}>
                     {/* Search Input */}
-                    <div className="relative hidden md:block">
+                    <div className={`relative ${currentURL === '/movies' || currentURL === '/series' ? "hidden md:block" : "hidden"} `}>
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg className="w-4 h-4 text-red-950" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 20 20">
@@ -53,7 +53,7 @@ const Navigation = () => {
 
                 {/* Navigation Links Mobile */}
                 <div className={`items-center justify-between ${!isToggle ? "hidden" : ""} w-full md:flex md:w-auto md:order-1`} id="navbar-search">
-                    <div className="relative mt-3 md:hidden">
+                    <div className={`relative mt-3 ${currentURL === "/movies" || currentURL === "/series" ? "block md:hidden" : "hidden"} `}>
                         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                             <svg className="w-4 h-4 text-red-950" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                 fill="none" viewBox="0 0 20 20">

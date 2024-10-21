@@ -33,9 +33,9 @@ const Movies = () => {
                 const [genresURL] = await Promise.all([
                     fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => res.json()),
                 ]);
-
                 setGenres(genresURL.genres);
                 
+                // Set moviesURL empty
                 let moviesURL = '';
 
                 if (chosenGenre.length > 0 && inputYear) {
@@ -54,6 +54,7 @@ const Movies = () => {
                     moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
                 }
 
+                // Fetch URL
                 const discoverURL = await fetch(moviesURL).then((res) => res.json());
                 setMovies(discoverURL.results);
             } catch (error) {
@@ -67,12 +68,14 @@ const Movies = () => {
         fetchData(pageFromUrl);
     },[location.search, chosenGenre, inputYear])
 
+    // Next Page Button
     const handleNextPageButton = () => {
         const nextPage = page + 1;
         setPage(nextPage);
         navigate(`/movies?page=${nextPage}`); 
     }
 
+    // Previous Page Button
     const handlePreviousPageButton = () => {
         const prevPage = page - 1;
         setPage(prevPage);
@@ -81,10 +84,15 @@ const Movies = () => {
 
     // Filter Genres
     const handleClickFilterGenres = (genre) => {
+        // Set Chosen Genre with previous item parameter
         setChosenGenre((prev) => {
+            // Conditional check
+            // If previous item include from genre id
             if (prev.includes(genre)) {
+                // Filter to deselect
                 return prev.filter(id => id !== genre);
             } else {
+                // Else if not included yet, append array
                 return [...prev, genre];
             }
         })
@@ -100,7 +108,10 @@ const Movies = () => {
 
     // Enter Release Year
     const handleClickReleaseYear = (event) => {
+        // Declare "year" from input and make it integer
         const year = parseInt(event.target.value, 10);
+        // Conditional check
+        // if the key that is pressed is "Enter", remove whitespace with trim() , check also if input year is between 1900 to current year
         if (event.key === "Enter" && event.target.value.trim() && year > 1900 && year <= new Date().getFullYear()) {
             setInputYear(year);
         }

@@ -6,6 +6,7 @@ import Movies from './pages/Movies';
 import TvSeries from './pages/TvSeries';
 import MovieDetails from './pages/MovieDetails';
 import TvSeriesDetails from './pages/TvSeriesDetails';
+import NotFound from './components/404';
 
 
 createRoot(document.getElementById('root')).render(
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/movies" element={<Movies />} />
       <Route path="/series/:id" element={<TvSeriesDetails />} />
       <Route path="/series" element={<TvSeries />}/>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   </BrowserRouter>
 )

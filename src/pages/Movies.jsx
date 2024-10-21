@@ -51,9 +51,9 @@ const Movies = () => {
                     // Only year filter applied
                     moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&year=${inputYear}&sort_by=popularity.dsc&page=${page}`;
                 } else if (filter && filter.url === "popular"){
-                    moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&page=${page}`;
+                    moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
                 } else if (filter && filter.url === "upcoming"){
-                        moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&page=${page}`;
+                        moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
                 } else {
                     // No filters, get now playing
                     moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;

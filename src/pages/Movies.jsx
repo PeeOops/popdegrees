@@ -11,7 +11,7 @@ const Movies = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [genres, setGenres] = useState([]);
-    const [chosenGenre, setChosenGenre] = useState(null);
+    const [chosenGenre, setChosenGenre] = useState([]);
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [error, setError] = useState("");
@@ -36,7 +36,8 @@ const Movies = () => {
 
                 setGenres(genresURL.genres);
                 if (chosenGenre !== null) {
-                    const discoverURL = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${chosenGenre}&sort_by=popularity.dsc&page=${page}`).then((res) => res.json());
+                    const onChosenGenre = chosenGenre.join(',')
+                    const discoverURL = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&sort_by=popularity.dsc&page=${page}`).then((res) => res.json());
                     setMovies(discoverURL.results);
                 } else {
                     setMovies(moviesURL.results);
@@ -66,13 +67,18 @@ const Movies = () => {
 
     // Filter Genres
     const handleClickFilterGenres = (genre) => {
-        const selectedGenre = genre;
-        setChosenGenre(selectedGenre);
+        setChosenGenre((prev) => {
+            if (prev.includes(genre)) {
+                return prev.filter(id => id !== genre);
+            } else {
+                return [...prev, genre];
+            }
+        })
     }
 
     // Clear Filter
     const handleClickClearFilters = () => {
-        setChosenGenre(null);
+        setChosenGenre([]);
         setPage(1);
         navigate(`/movies`);
     }
@@ -92,7 +98,7 @@ const Movies = () => {
                     <p className="mt-4 font-bold">Genres</p>
                     <ul className="space-y-2 space-x-2">
                         {                
-                            genres.map((genre) => <li key={genre.id} className={`${chosenGenre === genre.id ? "bg-yellow-300" : "bg-white"} text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300 inline-flex`} onClick={() => handleClickFilterGenres(genre.id)} >{genre.name}</li>)
+                            genres.map((genre) => <li key={genre.id} className={`${chosenGenre.includes(genre.id) ? "bg-yellow-300" : "bg-white"} text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300 inline-flex`} onClick={() => handleClickFilterGenres(genre.id)} >{genre.name}</li>)
                         }
                     </ul>
 

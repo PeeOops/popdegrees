@@ -41,7 +41,7 @@ const Home = () => {
                             throw new Error("Fetch data failed");
                         }
                         return res.json();
-                    })
+                    }),
                 ]);
                 setPopularMovies(popularMoviesURL.results);
                 setTopSeries(topSeriesURL.results);

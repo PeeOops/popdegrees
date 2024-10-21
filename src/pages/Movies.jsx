@@ -11,6 +11,7 @@ const Movies = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [genres, setGenres] = useState([]);
+    const [chosenGenre, setChosenGenre] = useState(null);
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [error, setError] = useState("");
@@ -29,21 +30,17 @@ const Movies = () => {
         const fetchData = async (page) => {
             try {
                 const [genresURL, moviesURL] = await Promise.all([
-                    fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => {
-                        if(!res.ok){
-                            throw new Error("Fetch data failed");
-                        }
-                        return res.json();
-                    }),
-                    fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`).then((res) => {
-                        if(!res.ok){
-                            throw new Error("Fetch data failed");
-                        }
-                        return res.json();
-                    }),
-                ])
+                    fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => res.json()),
+                    fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`).then((res) => res.json()),
+                ]);
+
                 setGenres(genresURL.genres);
-                setMovies(moviesURL.results);
+                if (chosenGenre !== null) {
+                    const discoverURL = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${chosenGenre}&sort_by=popularity.dsc&page=${page}`).then((res) => res.json());
+                    setMovies(discoverURL.results);
+                } else {
+                    setMovies(moviesURL.results);
+                }
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -53,11 +50,11 @@ const Movies = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search])
+    },[location.search, chosenGenre])
 
     const handleNextPageButton = () => {
         const nextPage = page + 1;
-        setPage(nextPage); 
+        setPage(nextPage);
         navigate(`/movies?page=${nextPage}`); 
     }
 
@@ -67,6 +64,19 @@ const Movies = () => {
         navigate(`/movies?page=${prevPage}`);
     }
 
+    // Filter Genres
+    const handleClickFilterGenres = (genre) => {
+        const selectedGenre = genre;
+        setChosenGenre(selectedGenre);
+    }
+
+    // Clear Filter
+    const handleClickClearFilters = () => {
+        setChosenGenre(null);
+        setPage(1);
+        navigate(`/movies`);
+    }
+
     return(
         <div>
             <Navigation />
@@ -74,11 +84,15 @@ const Movies = () => {
                 {/* Filter Side */}
 
                 <div className="w-1/4 bg-red-950 text-white p-4 rounded-md">
-                    <h1 className="border-b-2 pb-2 font-bold">Filter by</h1>
+                    <div className="flex flex-row justify-between items-center border-b-2 pb-2 font-bold">
+                        <h1 className="">Filter by</h1>
+                        <button className="hover:text-yellow-300" onClick={handleClickClearFilters}>Clear</button>
+                    </div>
+
                     <p className="mt-4 font-bold">Genres</p>
                     <ul className="space-y-2 space-x-2">
                         {                
-                            genres.map((genre) => <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300 inline-flex">{genre.name}</li>)
+                            genres.map((genre) => <li key={genre.id} className={`${chosenGenre === genre.id ? "bg-yellow-300" : "bg-white"} text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300 inline-flex`} onClick={() => handleClickFilterGenres(genre.id)} >{genre.name}</li>)
                         }
                     </ul>
 

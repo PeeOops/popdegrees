@@ -53,6 +53,7 @@ const Movies = () => {
                     // No filters, get now playing
                     moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
                 }
+                console.log(genres)
 
                 // Fetch URL
                 const discoverURL = await fetch(moviesURL).then((res) => res.json());
@@ -120,6 +121,8 @@ const Movies = () => {
     return(
         <div>
             <Navigation />
+            
+
             <div className="flex montserrat pt-8 pl-8 pr-8">
                 {/* Filter Side */}
 
@@ -127,6 +130,12 @@ const Movies = () => {
                     <div className="flex flex-row justify-between items-center border-b-2 pb-2 font-bold">
                         <h1 className="">Filter by</h1>
                         <button className="hover:text-yellow-300" onClick={handleClickClearFilters}>Clear</button>
+                    </div>
+                    <div className="flex flex-col mt-4 border-b-2 pb-2">
+                        <p className="font-bold">Filtered:</p>
+                        <p><b>Genres:</b> {chosenGenre.length === 0 ? "None" : genres.filter(genre => chosenGenre.includes(genre.id)).map(genre => genre.name).join(", ")}</p>
+                        <p><b>Released Year:</b> {inputYear === "" ? "None" : inputYear}</p>
+
                     </div>
 
                     <p className="mt-4 font-bold">Genres</p>

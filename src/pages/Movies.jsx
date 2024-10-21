@@ -115,6 +115,7 @@ const Movies = () => {
         // if the key that is pressed is "Enter", remove whitespace with trim() , check also if input year is between 1900 to current year
         if (event.key === "Enter" && event.target.value.trim() && year > 1900 && year <= new Date().getFullYear()) {
             setInputYear(year);
+            event.target.value = "";
         }
     }
 

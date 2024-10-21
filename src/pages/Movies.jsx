@@ -39,6 +39,7 @@ const Movies = () => {
                     const onChosenGenre = chosenGenre.join(',')
                     const discoverURL = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&sort_by=popularity.dsc&page=${page}`).then((res) => res.json());
                     setMovies(discoverURL.results);
+                    console.log(movies)
                 } else {
                     setMovies(moviesURL.results);
                 }
@@ -124,7 +125,7 @@ const Movies = () => {
                 <div className="w-3/4 bg-white">
                     <div className="flex flex-wrap justify-center items-center">
                         {
-                        loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48 lg:my-96"></div> :
+                        loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48 lg:my-96"></div> : movies.length !== 0 ? (
                             movies.slice(0,21).map((movie) => (
                                 <Link to={`/movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out inline-flex mb-2 mr-2 ml-2 w-1/6">
                                     {
@@ -133,7 +134,7 @@ const Movies = () => {
                                         <div className="flex justify-center items-center bg-gray-300 m-auto lg:w-40 lg:h-[17.5vw]"><p className="font-bold text-center text-gray-600">N/A</p></div>
                                     }
                                 </Link>
-                            ))
+                            ))) : <p className="lg:my-96 font-bold lg:text-3xl">No Movies Found</p>
                         }
                         
                     </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faArrowRight, faHome, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
 import { formatRuntime, formatDate } from '../Utils';
@@ -14,6 +14,7 @@ const MovieDetails = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
     const [movie, setMovie] = useState({});
     const [casts, setCasts] = useState([]);
     const [medias, setMedias] = useState([]);

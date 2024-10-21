@@ -39,7 +39,6 @@ const Movies = () => {
                     const onChosenGenre = chosenGenre.join(',')
                     const discoverURL = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&sort_by=popularity.dsc&page=${page}`).then((res) => res.json());
                     setMovies(discoverURL.results);
-                    console.log(movies)
                 } else {
                     setMovies(moviesURL.results);
                 }
@@ -127,10 +126,10 @@ const Movies = () => {
                         {
                         loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48 lg:my-96"></div> : movies.length !== 0 ? (
                             movies.slice(0,21).map((movie) => (
-                                <Link to={`/movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out inline-flex mb-2 mr-2 ml-2 w-1/6">
+                                <Link key={movie.id} to={`/movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out inline-flex mb-2 mr-2 ml-2 w-1/6">
                                     {
                                         movie.poster_path !== null ?
-                                        <img  key={movie.id} src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer " /> :
+                                        <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} alt={movie.title} className="w-12 sm:w-24 md:w-32 lg:w-40 cursor-pointer " /> :
                                         <div className="flex justify-center items-center bg-gray-300 m-auto lg:w-40 lg:h-[17.5vw]"><p className="font-bold text-center text-gray-600">N/A</p></div>
                                     }
                                 </Link>

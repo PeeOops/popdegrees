@@ -92,6 +92,7 @@ const MovieDetails = () => {
                 .pop());
               setCertification(releaseDateURL.results.filter(item => item.iso_3166_1 === "US").flatMap(item => item.release_dates.map(cert => cert.certification)).pop());
               setLanguages(languageURL);
+              console.log(movieDataURL)
             } catch (error) {
               setError(error.message);
             } finally {
@@ -169,6 +170,7 @@ const MovieDetails = () => {
                         <div className="flex space-x-4 items-center flex-row">
                             <p className="text-[1.1vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                             <p className="border-white border-2 font-bold text-[0.9vw] p-0.5 pr-1 pl-1">{certification ? certification : "NR"}</p>
+                            <p className="text-[1.1vw]">User Score: {movie.vote_average ? Math.round(movie.vote_average * 10) / 10 : "0"} / 10</p>
                         </div>
                         {/* Movie Tagline */}
                         <p className="italic text-gray-400 text-[1.05vw]">{movie.tagline}</p>

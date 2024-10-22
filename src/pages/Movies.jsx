@@ -46,7 +46,7 @@ const Movies = () => {
                 }
 
                 if(inputYear){
-                    moviesURL += `$year=${inputYear}`;
+                    moviesURL += `&year=${inputYear}`;
                 }
                 
                 if (filter && filter.url === "popular"){

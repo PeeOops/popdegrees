@@ -13,7 +13,8 @@ const Movies = () => {
     const { filter } = location.state || {};
     const [genres, setGenres] = useState([]);
     const [chosenGenre, setChosenGenre] = useState([]);
-    const [inputYear, setInputYear] = useState('');
+    const [inputYear, setInputYear] = useState("");
+    const [movieLists, setMovieLists] = useState("");
     const [movies, setMovies] = useState([]);
     const [page, setPage] = useState(1);
     const [error, setError] = useState("");
@@ -51,17 +52,32 @@ const Movies = () => {
                     // Only year filter applied
                     moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&year=${inputYear}&sort_by=popularity.dsc&page=${page}`;
                 } else if (filter && filter.url === "popular"){
+                    // View popular Movies from Home Page
                     moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
                 } else if (filter && filter.url === "upcoming"){
+                    // View upcoming Movies from Home Page
+                    moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+                } else if(movieLists) {
+                    // Only movie lists filter applied
+                    if(movieLists === "Now Playing"){
+                        moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
+                    }else if(movieLists === "Popular"){
+                        moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+                    }else if(movieLists === "Top Rated"){
+                        moviesURL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
+                    }else if(movieLists === "Upcoming"){
                         moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+                    }
                 } else {
                     // No filters, get now playing
                     moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
                 }
 
                 // Fetch URL
+                console.log(moviesURL)
                 const discoverURL = await fetch(moviesURL).then((res) => res.json());
                 setMovies(discoverURL.results);
+                console.log(movieLists)
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -71,7 +87,7 @@ const Movies = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search, chosenGenre, inputYear])
+    },[location.search, chosenGenre, inputYear, movieLists, filter, page])
 
     // Next Page Button
     const handleNextPageButton = () => {
@@ -108,6 +124,7 @@ const Movies = () => {
         setChosenGenre([]);
         setPage(1);
         setInputYear("");
+        setMovieLists("");
         navigate(`/movies`);
     }
 
@@ -120,6 +137,18 @@ const Movies = () => {
         if (event.key === "Enter" && event.target.value.trim() && year > 1900 && year <= new Date().getFullYear()) {
             setInputYear(year);
             event.target.value = "";
+        }
+    }
+
+    const handleClickMovieLists = (lists) => {
+        if(lists === "now_playing"){
+            setMovieLists("Now Playing");
+        }else if(lists === "popular"){
+            setMovieLists("Popular");
+        }else if(lists === "top_rated"){
+            setMovieLists("Top Rated");
+        }else if(lists === "upcoming"){
+            setMovieLists("Upcoming");
         }
     }
 
@@ -140,6 +169,7 @@ const Movies = () => {
                         <p className="font-bold">Filtered:</p>
                         <p><b>Genres:</b> {chosenGenre.length === 0 ? "None" : genres.filter(genre => chosenGenre.includes(genre.id)).map(genre => genre.name).join(", ")}</p>
                         <p><b>Released Year:</b> {inputYear === "" ? "None" : inputYear}</p>
+                        <p><b>Lists:</b> {movieLists === "" ? "None" : movieLists}</p>
 
                     </div>
 
@@ -154,10 +184,10 @@ const Movies = () => {
                     <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" onKeyDown={handleClickReleaseYear} max={new Date().getFullYear()} />
                     <p className="mt-4 font-bold">Lists</p>
                     <ul className="space-y-2 mt-2">
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Now Playing</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Popular</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Top Rated</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Upcoming</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("now_playing")}>Now Playing</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("popular")}>Popular</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("top_rated")}>Top Rated</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("upcoming")}>Upcoming</li>
                     </ul>
 
 

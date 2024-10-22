@@ -38,20 +38,18 @@ const Movies = () => {
                 setGenres(genresURL.genres);
                 
                 // Set moviesURL empty
-                let moviesURL = '';
+                let moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&sort_by=popularity.dsc&page=${page}&language=en-US`;
 
-                if (chosenGenre.length > 0 && inputYear) {
-                    // Both genre and year filters applied
-                    const onChosenGenre = chosenGenre.join(',');
-                    moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&year=${inputYear}&sort_by=popularity.dsc&page=${page}`;
-                } else if (chosenGenre.length > 0) {
-                    // Only genre filter applied
-                    const onChosenGenre = chosenGenre.join(',');
-                    moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&with_genres=${onChosenGenre}&sort_by=popularity.dsc&page=${page}`;
-                } else if (inputYear) {
-                    // Only year filter applied
-                    moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&year=${inputYear}&sort_by=popularity.dsc&page=${page}`;
-                } else if (filter && filter.url === "popular"){
+                if(chosenGenre.length > 0){
+                    const onChosenGenre = chosenGenre.join(', ');
+                    moviesURL += `&with_genres=${onChosenGenre}`;
+                }
+
+                if(inputYear){
+                    moviesURL += `$year=${inputYear}`;
+                }
+                
+                if (filter && filter.url === "popular"){
                     // View popular Movies from Home Page
                     moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
                 } else if (filter && filter.url === "upcoming"){
@@ -68,16 +66,11 @@ const Movies = () => {
                     }else if(movieLists === "Upcoming"){
                         moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
                     }
-                } else {
-                    // No filters, get now playing
-                    moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
                 }
 
                 // Fetch URL
-                console.log(moviesURL)
                 const discoverURL = await fetch(moviesURL).then((res) => res.json());
                 setMovies(discoverURL.results);
-                console.log(movieLists)
             } catch (error) {
                 setError(error.message);
             } finally {

@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Outlet } from 'react-router-dom';
 import './styles/index.css'
 import Home from './pages/Home';
 import Movies from './pages/Movies';
@@ -10,18 +10,30 @@ import NotFound from './components/404';
 import Navigation from "./components/Navigation";
 import Footer from "./components/Footer";
 
+const MainLayout = () => {
+  return (
+      <>
+          <Navigation />
+          <Outlet /> {/* Renders child routes */}
+          <Footer />
+      </>
+  );
+};
+
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-    <Navigation />
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/movies/:id" element={<MovieDetails />}/>
-      <Route path="/movies" element={<Movies />} />
-      <Route path="/series/:id" element={<TvSeriesDetails />} />
-      <Route path="/series" element={<TvSeries />}/>
-      <Route path="*" element={<NotFound />} />
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/series" element={<TvSeries />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+        <Route path="/movies/:id" element={<MovieDetails />} />
+        <Route path="/series/:id" element={<TvSeriesDetails />} />
     </Routes>
-    <Footer />
   </BrowserRouter>
 )
+
+

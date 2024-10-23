@@ -59,12 +59,20 @@ const Movies = () => {
                     // Only movie lists filter applied
                     if(movieLists === "Now Playing"){
                         moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
+                        setChosenGenre("");
+                        setInputYear("");
                     }else if(movieLists === "Popular"){
                         moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+                        setChosenGenre("");
+                        setInputYear("");
                     }else if(movieLists === "Top Rated"){
                         moviesURL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
+                        setChosenGenre("");
+                        setInputYear("");
                     }else if(movieLists === "Upcoming"){
                         moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+                        setChosenGenre("");
+                        setInputYear("");
                     }
                 }
 

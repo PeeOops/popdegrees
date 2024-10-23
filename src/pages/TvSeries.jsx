@@ -63,7 +63,6 @@ const TvSeries = () => {
 
     return(
         <div>
-            <Navigation />
             <div className="flex montserrat pt-8 pl-8 pr-8">
                 {/* Filter Side */}
 
@@ -109,7 +108,6 @@ const TvSeries = () => {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     )
 }

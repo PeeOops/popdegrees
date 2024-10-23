@@ -17,7 +17,7 @@ const Navigation = () => {
 
     // Click Search
     const handleClickSearch = (event) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && currentURL === "/movies") {
             const inputValue = event.target.value.trim();
             if (inputValue) { // Prevent navigating with empty input
                 navigate('/movies', { state: { query: { input: inputValue } } });

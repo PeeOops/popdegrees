@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Navigation from "../components/Navigation";
-import Footer from "../components/Footer";
 import Hero from '../assets/hero.jpg';
 import Film from '../assets/film.svg'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const API_KEY = process.env.API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -12,6 +10,7 @@ const POPULAR_SERIES_URL = `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language
 
 const Home = () => {
 
+    const navigate = useNavigate();
     const [popularMovies, setPopularMovies] = useState([]);
     const [upcomingMovies, setUpcomingMovies] = useState([]);
     const [topSeries, setTopSeries] = useState([]);
@@ -59,7 +58,6 @@ const Home = () => {
 
     return(
         <div>
-            <Navigation />
             <div className="relative w-full h-screen">
                 <img 
                     src={Hero} 
@@ -164,9 +162,6 @@ const Home = () => {
                     <Link to="/movies" state={{ filter: { url: 'upcoming' } }}><p className="border-dashed border-2 border-black p-4 hover:bg-red-950 hover:text-white hover:border-solid">View All</p></Link>
                 </div>
             </div>
-
-            <Footer />
-
         </div>
     )
 }

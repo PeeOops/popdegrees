@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
-import Navigation from "../components/Navigation";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const API_KEY = process.env.API_KEY;

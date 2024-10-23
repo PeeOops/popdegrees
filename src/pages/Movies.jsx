@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
-import Navigation from "../components/Navigation";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const API_KEY = process.env.API_KEY;
@@ -11,6 +9,7 @@ const Movies = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { filter } = location.state || {};
+    const { query } = location.state || { query: ""};
     const [genres, setGenres] = useState([]);
     const [chosenGenre, setChosenGenre] = useState([]);
     const [inputYear, setInputYear] = useState("");
@@ -30,6 +29,7 @@ const Movies = () => {
         const pageFromUrl = parseInt(queryParams.get('page')) || 1;
         setPage(pageFromUrl);
 
+
         const fetchData = async (page) => {
             try {
                 const [genresURL] = await Promise.all([
@@ -47,6 +47,10 @@ const Movies = () => {
 
                 if(inputYear){
                     moviesURL += `&primary_release_year=${inputYear}`;
+                }
+
+                if(query){
+                    moviesURL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query.input}&page=${page}`;
                 }
                 
                 if (filter && filter.url === "popular"){
@@ -79,6 +83,7 @@ const Movies = () => {
                 // Fetch URL
                 const discoverURL = await fetch(moviesURL).then((res) => res.json());
                 setMovies(discoverURL.results);
+                
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -88,7 +93,7 @@ const Movies = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search, chosenGenre, inputYear, movieLists, filter, page])
+    },[location.search, chosenGenre, inputYear, movieLists, filter, page, query])
 
     // Next Page Button
     const handleNextPageButton = () => {
@@ -147,9 +152,6 @@ const Movies = () => {
 
     return(
         <div>
-            <Navigation />
-            
-
             <div className="flex montserrat pt-8 pl-8 pr-8">
                 {/* Filter Side */}
 
@@ -208,14 +210,13 @@ const Movies = () => {
                         
                     </div>
                     
-                    <div className="flex justify-between ml-6">
+                    <div className={`flex justify-between ml-6 ${query ? "hidden" : "block"}`}>
                         <button className={`bg-red-950 text-white p-2 rounded-md hover:text-yellow-300 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`} disabled={page === 1} onClick={handlePreviousPageButton}>Prev</button>
                         <button className="bg-red-950 text-white p-2 rounded-md cursor-pointer hover:text-yellow-300" onClick={handleNextPageButton}>Next</button>
                     </div>
                 </div>
             </div>
 
-            <Footer />
         </div>
     )
 }

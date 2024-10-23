@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Logo from '../assets/logo.png';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 
 const Navigation = () => {
 
+    const navigate = useNavigate();
     const [isToggle, setIsToggle] = useState(false);
     const location = useLocation();
     const currentURL = location.pathname;
@@ -12,6 +13,18 @@ const Navigation = () => {
     // Toggle Mobile Navigation Links
     const handleClickToggle = () =>{
     setIsToggle(prev => !prev);
+    }
+
+    // Click Search
+    const handleClickSearch = (event) => {
+        if (event.key === "Enter") {
+            const inputValue = event.target.value.trim();
+            if (inputValue) { // Prevent navigating with empty input
+                navigate('/movies', { state: { query: { input: inputValue } } });
+                event.target.value = ""; // Clear input after navigating
+            }
+        }
+
     }
 
     return(
@@ -36,7 +49,7 @@ const Navigation = () => {
                         </div>
                         <input type="text" id="search-navbar"
                             className="block w-full p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Search..." />
+                            placeholder="Search..." onKeyDown={handleClickSearch} />
                     </div>
                     {/* Hamburger Mobile Icon */}
                     <button data-collapse-toggle="navbar-search" type="button"

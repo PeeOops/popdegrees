@@ -38,7 +38,7 @@ const Movies = () => {
                 setGenres(genresURL.genres);
                 
                 // Set moviesURL empty
-                let moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&sort_by=popularity.dsc&page=${page}&language=en-US`;
+                let moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}&language=en-US`;
 
                 if(chosenGenre.length > 0){
                     const onChosenGenre = chosenGenre.join(', ');
@@ -134,15 +134,7 @@ const Movies = () => {
     }
 
     const handleClickMovieLists = (lists) => {
-        if(lists === "now_playing"){
-            setMovieLists("Now Playing");
-        }else if(lists === "popular"){
-            setMovieLists("Popular");
-        }else if(lists === "top_rated"){
-            setMovieLists("Top Rated");
-        }else if(lists === "upcoming"){
-            setMovieLists("Upcoming");
-        }
+        setMovieLists(lists);
     }
 
     return(
@@ -177,10 +169,10 @@ const Movies = () => {
                     <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" onKeyDown={handleClickReleaseYear} max={new Date().getFullYear()} />
                     <p className="mt-4 font-bold">Lists</p>
                     <ul className="space-y-2 mt-2">
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("now_playing")}>Now Playing</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("popular")}>Popular</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("top_rated")}>Top Rated</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("upcoming")}>Upcoming</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Now Playing")}>Now Playing</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Popular")}>Popular</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Top Rated")}>Top Rated</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Upcoming")}>Upcoming</li>
                     </ul>
 
 

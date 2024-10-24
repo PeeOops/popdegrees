@@ -22,56 +22,56 @@ const Movies = () => {
     // Using useMemo to store Fetch URLS
     const movieURL = useMemo(() => {
         // Set base URL
-        let moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}&language=en-US`;
+        let url = `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}&language=en-US`;
 
         // Filter by Genre
         if(chosenGenre.length > 0){
             const onChosenGenre = chosenGenre.join(', ');
-            moviesURL += `&with_genres=${onChosenGenre}`;
+            url += `&with_genres=${onChosenGenre}`;
         }
 
         // Filter by Release Year
         if(inputYear){
-            moviesURL += `&primary_release_year=${inputYear}`;
+            url += `&primary_release_year=${inputYear}`;
         }
 
         // Filter by Search Query
         if(query){
-            moviesURL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query.input}&page=${page}`;
+            url = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query.input}&page=${page}`;
         }
         
         // Filter base on home view all section
         if (filter && filter.url === "popular"){
             // View popular Movies from Home Page
-            moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+            url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
         } else if (filter && filter.url === "upcoming"){
             // View upcoming Movies from Home Page
-            moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+            url = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
         }
         
         // Filter based on Lists
         if(movieLists) {
             // Only movie lists filter applied
             if(movieLists === "Now Playing"){
-                moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
+                url = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
                 setChosenGenre("");
                 setInputYear("");
             }else if(movieLists === "Popular"){
-                moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+                url = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
                 setChosenGenre("");
                 setInputYear("");
             }else if(movieLists === "Top Rated"){
-                moviesURL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
+                url = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
                 setChosenGenre("");
                 setInputYear("");
             }else if(movieLists === "Upcoming"){
-                moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+                url = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
                 setChosenGenre("");
                 setInputYear("");
             }
         }
 
-        return moviesURL;
+        return url;
     },[page, inputYear, chosenGenre, movieLists, filter, query])
 
     

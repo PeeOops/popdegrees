@@ -11,6 +11,7 @@ const TvSeries = () => {
     const [page, setPage] = useState(1);
     const [tvSeries, setTvSeries] = useState([]);
     const [genres, setGenres] = useState([]);
+    const [inputYear, setInputYear] = useState("");
     const [chosenGenre, setChosenGenre] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -19,14 +20,19 @@ const TvSeries = () => {
         // Base Series URL
         let url = `${BASE_URL}/discover/tv?api_key=${API_KEY}&page=${page}&language=en-US`;
         console.log(chosenGenre)
+
         // Filter by Genre
         if(chosenGenre.length > 0){
             const onChosenGenre = chosenGenre.join(',');
             url += `&with_genres=${onChosenGenre}`;
         }
+        // Filter by Release Year
+        if(inputYear){
+            url += `&first_air_date_year=${inputYear}`;
+        }
 
         return url;
-    },[page, chosenGenre])
+    },[page, chosenGenre, inputYear])
 
 
     useEffect(() => {
@@ -62,7 +68,7 @@ const TvSeries = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search, seriesURL, chosenGenre])
+    },[location.search, seriesURL, chosenGenre, inputYear])
 
     const handleNextPageButton = () => {
         const nextPage = page + 1;
@@ -76,21 +82,33 @@ const TvSeries = () => {
         navigate(`/series?page=${prevPage}`);
     }
 
-        // Filter Genres
-        const handleClickFilterGenres = (genre) => {
-            // Set Chosen Genre with previous item parameter
-            setChosenGenre((prev) => {
-                // Conditional check
-                // If previous item include from genre id
-                if (prev.includes(genre)) {
-                    // Filter to deselect
-                    return prev.filter(id => id !== genre);
-                } else {
-                    // Else if not included yet, append array
-                    return [...prev, genre];
-                }
-            })
+    // Filter Genres
+    const handleClickFilterGenres = (genre) => {
+        // Set Chosen Genre with previous item parameter
+        setChosenGenre((prev) => {
+            // Conditional check
+            // If previous item include from genre id
+            if (prev.includes(genre)) {
+                // Filter to deselect
+                return prev.filter(id => id !== genre);
+            } else {
+                // Else if not included yet, append array
+                return [...prev, genre];
+             }
+        })
+    }
+
+    // Enter Release Year
+    const handleClickReleaseYear = (event) => {
+        // Declare "year" from input and make it integer
+        const year = parseInt(event.target.value, 10);
+        // Conditional check
+        // if the key that is pressed is "Enter", remove whitespace with trim() , check also if input year is between 1900 to current year
+        if (event.key === "Enter" && event.target.value.trim() && year > 1900 && year <= new Date().getFullYear()) {
+            setInputYear(year);
+            event.target.value = "";
         }
+    }
 
     return(
         <div>
@@ -105,7 +123,7 @@ const TvSeries = () => {
                     <div className="flex flex-col mt-4 border-b-2 pb-2">
                         <p className="font-bold">Filtered:</p>
                         <p><b>Genres:</b> {chosenGenre.length === 0 ? "None" : genres.filter(genre => chosenGenre.includes(genre.id)).map(genre => genre.name).join(", ")}</p>
-                        <p><b>Released Year:</b> None</p>
+                        <p><b>Released Year:</b> {inputYear === "" ? "None" : inputYear}</p>
                         <p><b>Lists:</b> None</p>
 
                     </div>
@@ -118,7 +136,7 @@ const TvSeries = () => {
                     </ul>
 
                     <p className="mt-4 font-bold">Release Year</p>
-                    <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" max={new Date().getFullYear()} />
+                    <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" onKeyDown={handleClickReleaseYear} max={new Date().getFullYear()} />
                     <p className="mt-4 font-bold">Lists</p>
                     <ul className="space-y-2 mt-2">
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Now Playing</li>

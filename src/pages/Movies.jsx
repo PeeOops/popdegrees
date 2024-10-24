@@ -26,7 +26,7 @@ const Movies = () => {
 
         // Filter by Genre
         if(chosenGenre.length > 0){
-            const onChosenGenre = chosenGenre.join(', ');
+            const onChosenGenre = chosenGenre.join(',');
             url += `&with_genres=${onChosenGenre}`;
         }
 

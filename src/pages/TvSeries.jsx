@@ -10,6 +10,7 @@ const TvSeries = () => {
     const location = useLocation();
     const [page, setPage] = useState(1);
     const [tvSeries, setTvSeries] = useState([]);
+    const { query } = location.state || { query: ""};
     const [genres, setGenres] = useState([]);
     const [inputYear, setInputYear] = useState("");
     const [seriesLists, setSeriesLists] = useState("");
@@ -30,6 +31,11 @@ const TvSeries = () => {
         // Filter by Release Year
         if(inputYear){
             url += `&first_air_date_year=${inputYear}`;
+        }
+
+        // Filter by Search Query
+        if(query){
+            url = `${BASE_URL}/search/tv?api_key=${API_KEY}&query=${query.input}&page=${page}`;
         }
 
         // Filter based on Lists
@@ -55,7 +61,7 @@ const TvSeries = () => {
         }
 
         return url;
-    },[page, chosenGenre, inputYear, seriesLists])
+    },[page, chosenGenre, inputYear, seriesLists, query])
 
 
     useEffect(() => {
@@ -91,7 +97,7 @@ const TvSeries = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search, seriesURL, chosenGenre, inputYear])
+    },[location.search, seriesURL, chosenGenre, inputYear, query])
 
     const handleNextPageButton = () => {
         const nextPage = page + 1;

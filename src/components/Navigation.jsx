@@ -23,6 +23,12 @@ const Navigation = () => {
                 navigate('/movies', { state: { query: { input: inputValue } } });
                 event.target.value = ""; // Clear input after navigating
             }
+        }else if(event.key === "Enter" && currentURL === "/series"){
+            const inputValue = event.target.value.trim();
+            if(inputValue){
+                navigate('/series', {state : {query : {input : inputValue} } });
+                event.target.value = "";
+            }
         }
 
     }

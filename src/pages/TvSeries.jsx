@@ -12,6 +12,7 @@ const TvSeries = () => {
     const [tvSeries, setTvSeries] = useState([]);
     const [genres, setGenres] = useState([]);
     const [inputYear, setInputYear] = useState("");
+    const [seriesLists, setSeriesLists] = useState("");
     const [chosenGenre, setChosenGenre] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -31,8 +32,30 @@ const TvSeries = () => {
             url += `&first_air_date_year=${inputYear}`;
         }
 
+        // Filter based on Lists
+        if(seriesLists) {
+            // Only movie lists filter applied
+            if(seriesLists === "Airing Today"){
+                url = `${BASE_URL}/tv/airing_today?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }else if(seriesLists === "On The Air"){
+                url = `${BASE_URL}/tv/on_the_air?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }else if(seriesLists === "Popular"){
+                url = `${BASE_URL}/tv/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }else if(seriesLists === "Top Rated"){
+                url = `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }
+        }
+
         return url;
-    },[page, chosenGenre, inputYear])
+    },[page, chosenGenre, inputYear, seriesLists])
 
 
     useEffect(() => {
@@ -110,6 +133,11 @@ const TvSeries = () => {
         }
     }
 
+    // Filter Series Lists
+    const handleClickSeriesLists = (lists) => {
+        setSeriesLists(lists);
+    }
+
     return(
         <div>
             <div className="flex montserrat pt-8 pl-8 pr-8">
@@ -124,7 +152,7 @@ const TvSeries = () => {
                         <p className="font-bold">Filtered:</p>
                         <p><b>Genres:</b> {chosenGenre.length === 0 ? "None" : genres.filter(genre => chosenGenre.includes(genre.id)).map(genre => genre.name).join(", ")}</p>
                         <p><b>Released Year:</b> {inputYear === "" ? "None" : inputYear}</p>
-                        <p><b>Lists:</b> None</p>
+                        <p><b>Lists:</b> {seriesLists === "" ? "None" : seriesLists}</p>
 
                     </div>
 
@@ -139,10 +167,10 @@ const TvSeries = () => {
                     <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" onKeyDown={handleClickReleaseYear} max={new Date().getFullYear()} />
                     <p className="mt-4 font-bold">Lists</p>
                     <ul className="space-y-2 mt-2">
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Now Playing</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Popular</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Top Rated</li>
-                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300">Upcoming</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickSeriesLists("Airing Today")}>Airing Today</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickSeriesLists("On The Air")}>On The Air</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickSeriesLists("Popular")}>Popular</li>
+                        <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickSeriesLists("Top Rated")}>Top Rated</li>
                     </ul>
 
 

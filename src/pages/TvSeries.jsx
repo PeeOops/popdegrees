@@ -138,6 +138,15 @@ const TvSeries = () => {
         setSeriesLists(lists);
     }
 
+    // Clear Filter
+    const handleClickClearFilters = () => {
+        setChosenGenre([]);
+        setPage(1);
+        setInputYear("");
+        setSeriesLists("");
+        navigate(`/series`);
+    }
+
     return(
         <div>
             <div className="flex montserrat pt-8 pl-8 pr-8">
@@ -146,7 +155,7 @@ const TvSeries = () => {
                 <div className="w-1/4 bg-red-950 text-white p-4 rounded-md">
                     <div className="flex flex-row justify-between items-center border-b-2 pb-2 font-bold">
                         <h1 className="">Filter by</h1>
-                        <button className="hover:text-yellow-300">Clear</button>
+                        <button className="hover:text-yellow-300" onClick={handleClickClearFilters}>Clear</button>
                     </div>
                     <div className="flex flex-col mt-4 border-b-2 pb-2">
                         <p className="font-bold">Filtered:</p>

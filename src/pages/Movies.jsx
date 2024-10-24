@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const API_KEY = process.env.API_KEY;
@@ -19,69 +19,88 @@ const Movies = () => {
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
 
+    // Using useMemo to store Fetch URLS
+    const movieURL = useMemo(() => {
+        // Set base URL
+        let moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}&language=en-US`;
+
+        // Filter by Genre
+        if(chosenGenre.length > 0){
+            const onChosenGenre = chosenGenre.join(', ');
+            moviesURL += `&with_genres=${onChosenGenre}`;
+        }
+
+        // Filter by Release Year
+        if(inputYear){
+            moviesURL += `&primary_release_year=${inputYear}`;
+        }
+
+        // Filter by Search Query
+        if(query){
+            moviesURL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query.input}&page=${page}`;
+        }
+        
+        // Filter base on home view all section
+        if (filter && filter.url === "popular"){
+            // View popular Movies from Home Page
+            moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+        } else if (filter && filter.url === "upcoming"){
+            // View upcoming Movies from Home Page
+            moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+        }
+        
+        // Filter based on Lists
+        if(movieLists) {
+            // Only movie lists filter applied
+            if(movieLists === "Now Playing"){
+                moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }else if(movieLists === "Popular"){
+                moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }else if(movieLists === "Top Rated"){
+                moviesURL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }else if(movieLists === "Upcoming"){
+                moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
+                setChosenGenre("");
+                setInputYear("");
+            }
+        }
+
+        return moviesURL;
+    },[page, inputYear, chosenGenre, movieLists, filter, query])
+
     
 
     useEffect(() => {
-
         // queryParams search the URL for location.search examples "https://movies?page=2" = "?page=2"
         const queryParams = new URLSearchParams(location.search);
         // pageFromUrl output will be "2" or "1" as default page
         const pageFromUrl = parseInt(queryParams.get('page')) || 1;
         setPage(pageFromUrl);
 
-
         const fetchData = async (page) => {
             try {
-                const [genresURL] = await Promise.all([
-                    fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => res.json()),
+                // Fetch Genres URL and Movies URL
+                const [genresURL, discoverURL] = await Promise.all([
+                    fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => {
+                        if(!res.ok){
+                            throw new Error("Fetch data failed");
+                        }
+                        return res.json();
+                    }),
+                    fetch(movieURL).then(((res) => {
+                        if(!res.ok){
+                            throw new Error("Fetch data failed");
+                        }
+                        return res.json();
+                    }))
                 ]);
                 setGenres(genresURL.genres);
-                
-                // Set moviesURL empty
-                let moviesURL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&page=${page}&language=en-US`;
-
-                if(chosenGenre.length > 0){
-                    const onChosenGenre = chosenGenre.join(', ');
-                    moviesURL += `&with_genres=${onChosenGenre}`;
-                }
-
-                if(inputYear){
-                    moviesURL += `&primary_release_year=${inputYear}`;
-                }
-
-                if(query){
-                    moviesURL = `${BASE_URL}/search/movie?api_key=${API_KEY}&query=${query.input}&page=${page}`;
-                }
-                
-                if (filter && filter.url === "popular"){
-                    // View popular Movies from Home Page
-                    moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
-                } else if (filter && filter.url === "upcoming"){
-                    // View upcoming Movies from Home Page
-                    moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
-                } else if(movieLists) {
-                    // Only movie lists filter applied
-                    if(movieLists === "Now Playing"){
-                        moviesURL = `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${page}`;
-                        setChosenGenre("");
-                        setInputYear("");
-                    }else if(movieLists === "Popular"){
-                        moviesURL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${page}`;
-                        setChosenGenre("");
-                        setInputYear("");
-                    }else if(movieLists === "Top Rated"){
-                        moviesURL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
-                        setChosenGenre("");
-                        setInputYear("");
-                    }else if(movieLists === "Upcoming"){
-                        moviesURL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${page}`;
-                        setChosenGenre("");
-                        setInputYear("");
-                    }
-                }
-
-                // Fetch URL
-                const discoverURL = await fetch(moviesURL).then((res) => res.json());
                 setMovies(discoverURL.results);
                 
             } catch (error) {
@@ -93,7 +112,7 @@ const Movies = () => {
         }
 
         fetchData(pageFromUrl);
-    },[location.search, chosenGenre, inputYear, movieLists, filter, page, query])
+    },[location.search, chosenGenre, inputYear, movieLists, filter, page, query, movieURL])
 
     // Next Page Button
     const handleNextPageButton = () => {

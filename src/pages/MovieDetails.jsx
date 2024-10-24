@@ -92,7 +92,6 @@ const MovieDetails = () => {
                 .pop());
               setCertification(releaseDateURL.results.filter(item => item.iso_3166_1 === "US").flatMap(item => item.release_dates.map(cert => cert.certification)).pop());
               setLanguages(languageURL);
-              console.log(movieDataURL)
             } catch (error) {
               setError(error.message);
             } finally {

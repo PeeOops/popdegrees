@@ -11,6 +11,7 @@ const TvSeries = () => {
     const [page, setPage] = useState(1);
     const [tvSeries, setTvSeries] = useState([]);
     const { query } = location.state || { query: ""};
+    const { filter } = location.state || { filter: "" };
     const [genres, setGenres] = useState([]);
     const [inputYear, setInputYear] = useState("");
     const [seriesLists, setSeriesLists] = useState("");
@@ -21,7 +22,6 @@ const TvSeries = () => {
     const seriesURL = useMemo(() => {
         // Base Series URL
         let url = `${BASE_URL}/discover/tv?api_key=${API_KEY}&page=${page}&language=en-US`;
-        console.log(chosenGenre)
 
         // Filter by Genre
         if(chosenGenre.length > 0){
@@ -36,6 +36,10 @@ const TvSeries = () => {
         // Filter by Search Query
         if(query){
             url = `${BASE_URL}/search/tv?api_key=${API_KEY}&query=${query.input}&page=${page}`;
+        }
+
+        if(filter && filter.url === "top_rated"){
+            url = `${BASE_URL}/tv/top_rated?api_key=${API_KEY}&language=en-US&page=${page}`;
         }
 
         // Filter based on Lists

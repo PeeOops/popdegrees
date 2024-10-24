@@ -127,7 +127,7 @@ const Home = () => {
                 </div>
                 <div className="flex flex-col align-center justify-center items-center mt-2 cursor-pointer">
                     <div className="border-l-2 border-dashed border-black h-12"></div>
-                    <p className="border-dashed border-2 border-black p-4 hover:bg-red-950 hover:text-white hover:border-solid">View All</p>
+                    <Link to="/series" state={{ filter: { url: 'top_rated' } }}><p className="border-dashed border-2 border-black p-4 hover:bg-red-950 hover:text-white hover:border-solid">View All</p></Link>
                 </div>
             </div>
 

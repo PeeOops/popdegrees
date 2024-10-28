@@ -19,9 +19,11 @@ const Navigation = () => {
     const handleClickSearch = (event) => {
         if (event.key === "Enter" && currentURL === "/movies") {
             const inputValue = event.target.value.trim();
-            if (inputValue) { // Prevent navigating with empty input
+            // Prevent navigating with empty input
+            if (inputValue) {
+                // Navigate to "/movies" with state query.input
                 navigate('/movies', { state: { query: { input: inputValue } } });
-                event.target.value = ""; // Clear input after navigating
+                event.target.value = "";
             }
         }else if(event.key === "Enter" && currentURL === "/series"){
             const inputValue = event.target.value.trim();
@@ -37,6 +39,7 @@ const Navigation = () => {
     <div>
         <nav className="bg-red-950 montserrat">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                {/* Logo and Brand */}
                 <Link to="/" className="flex items-center space-x-3">
                     <img src={Logo} className="h-12 rounded-full border-2" alt="PopDegrees Logo" />
                     <span className="self-center text-2xl font-bold whitespace-nowrap text-white apothem">PopDegrees</span>

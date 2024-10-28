@@ -162,7 +162,6 @@ const MovieDetails = () => {
                         <div className="flex justify-between items-center">
                             <h1 className="text-[1.6vw] font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
                             {/* NB: Add Search Input */}
-                            <FontAwesomeIcon icon={faMagnifyingGlass} className="right-content text-[1.4vw]" />
                         </div>
                         <hr className="border-t border-gray-300 my-2" />
                         {/* Movie Genres & Certificates */}

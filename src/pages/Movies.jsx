@@ -87,12 +87,14 @@ const Movies = () => {
             try {
                 // Fetch Genres URL and Movies URL
                 const [genresURL, discoverURL] = await Promise.all([
+                    // Fetch Genres
                     fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}`).then((res) => {
                         if(!res.ok){
                             throw new Error("Fetch data failed");
                         }
                         return res.json();
                     }),
+                    // Fetch Movies
                     fetch(movieURL).then(((res) => {
                         if(!res.ok){
                             throw new Error("Fetch data failed");
@@ -101,8 +103,7 @@ const Movies = () => {
                     }))
                 ]);
                 setGenres(genresURL.genres);
-                setMovies(discoverURL.results);
-                
+                setMovies(discoverURL.results);                
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -165,21 +166,25 @@ const Movies = () => {
         }
     }
 
+    // Set Movie List Filter
     const handleClickMovieLists = (lists) => {
         setMovieLists(lists);
     }
 
     return(
         <div>
+            {/* Error Message */}
+            <p className={`bg-red-600 text-white font-bold p-2 montserrat ${error ? "block" : "hidden"}`}>{error ? `Error: ${error}` : ""}</p>
             <div className="flex montserrat pt-8 pl-8 pr-8">
-                {/* Filter Side */}
-
+                {/* Filter Panel */}
                 <div className="w-1/4 bg-red-950 text-white p-4 rounded-md">
                     <div className="flex flex-row justify-between items-center border-b-2 pb-2 font-bold">
                         <h1 className="">Filter by</h1>
+                        {/* Clear Filter */}
                         <button className="hover:text-yellow-300" onClick={handleClickClearFilters}>Clear</button>
                     </div>
                     <div className="flex flex-col mt-4 border-b-2 pb-2">
+                        {/* Show what is being filtered */}
                         <p className="font-bold">Filtered:</p>
                         <p><b>Genres:</b> {chosenGenre.length === 0 ? "None" : genres.filter(genre => chosenGenre.includes(genre.id)).map(genre => genre.name).join(", ")}</p>
                         <p><b>Released Year:</b> {inputYear === "" ? "None" : inputYear}</p>
@@ -187,6 +192,7 @@ const Movies = () => {
 
                     </div>
 
+                    {/* Filter by Genres */}
                     <p className="mt-4 font-bold">Genres</p>
                     <ul className="space-y-2 space-x-2">
                         {                
@@ -194,8 +200,11 @@ const Movies = () => {
                         }
                     </ul>
 
+                    {/* Filter by Release Year */}
                     <p className="mt-4 font-bold">Release Year</p>
                     <input className="w-full p-2 text-red-950 rounded-md mt-2" placeholder="Ex: 2020" type="number" id="year" name="year" min="1900" onKeyDown={handleClickReleaseYear} max={new Date().getFullYear()} />
+
+                    {/* Filter by Movie Lists */}
                     <p className="mt-4 font-bold">Lists</p>
                     <ul className="space-y-2 mt-2">
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Now Playing")}>Now Playing</li>
@@ -203,19 +212,13 @@ const Movies = () => {
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Top Rated")}>Top Rated</li>
                         <li className="bg-white text-red-950 p-2 rounded-md cursor-pointer hover:bg-yellow-300" onClick={() => handleClickMovieLists("Upcoming")}>Upcoming</li>
                     </ul>
-
-
-
-
                 </div>
 
-                {/* Movies Content Side */}
-                
-
+                {/* Movies Panel */}
                 <div className="w-3/4 bg-white">
                     <div className="flex flex-wrap justify-center items-center">
                         {
-                        loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48 lg:my-96"></div> : movies.length !== 0 ? (
+                            loading ? <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48 lg:my-96"></div> : movies.length !== 0 ? (
                             movies.slice(0,21).map((movie) => (
                                 <Link key={movie.id} to={`/movies/${movie.id}`} className="m-0 p-0 hover:scale-110 transition-transform duration-300 ease-in-out inline-flex mb-2 mr-2 ml-2 w-1/6">
                                     {
@@ -229,6 +232,7 @@ const Movies = () => {
                         
                     </div>
                     
+                    {/* Next and Previous Buttons */}
                     <div className={`flex justify-between ml-6 ${query ? "hidden" : "block"}`}>
                         <button className={`bg-red-950 text-white p-2 rounded-md hover:text-yellow-300 ${page === 1 ? "cursor-not-allowed" : "cursor-pointer"}`} disabled={page === 1} onClick={handlePreviousPageButton}>Prev</button>
                         <button className="bg-red-950 text-white p-2 rounded-md cursor-pointer hover:text-yellow-300" onClick={handleNextPageButton}>Next</button>

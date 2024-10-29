@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft, faArrowRight, faHome, faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faHome} from '@fortawesome/free-solid-svg-icons';
 import { formatRuntime, formatDate } from '../Utils';
 import { faFacebook, faXTwitter, faInstagram, faImdb } from '@fortawesome/free-brands-svg-icons';
-
-
 
 const API_KEY = process.env.API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -14,7 +12,6 @@ const MovieDetails = () => {
 
     const { id } = useParams();
     const navigate = useNavigate();
-    const location = useLocation();
     const [movie, setMovie] = useState({});
     const [casts, setCasts] = useState([]);
     const [medias, setMedias] = useState([]);
@@ -24,9 +21,7 @@ const MovieDetails = () => {
     const [currentReview, setCurrentReview] = useState(0);
     const [certification, setCertification] = useState([]);
     const [languages, setLanguages] = useState([]);
-    // NB: Show Error
     const [error, setError] = useState('');
-    // NB: Make loading for each fetch? if necessary
     const [loading, setLoading] = useState(true);
     const [isNavChange, SetIsNavChange] = useState("cast");
     const [viewMore, setViewMore] = useState(false);
@@ -37,42 +32,49 @@ const MovieDetails = () => {
         const fetchData = async () => {
             try {
               const [movieDataURL, castDataURL, mediaDataURL, reviewsDataURL, externalURL, releaseDateURL, languageURL] = await Promise.all([
+                // Fetch Movie Details
                 fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
                 }),
+                // Fetch Casts
                 fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
                 }),
+                // Fetch Medias
                 fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
                 }),
+                // Fetch Reviews
                 fetch(`${BASE_URL}/movie/${id}/reviews?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
                 }),
+                // Fetch Social Media Links
                 fetch(`${BASE_URL}/movie/${id}/external_ids?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
                 }),
+                // Fetch Release Dates
                 fetch(`${BASE_URL}/movie/${id}/release_dates?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
                     }
                     return res.json();
                 }),
+                // Fetch Language
                 fetch(`${BASE_URL}/configuration/languages?api_key=${API_KEY}`).then((res) => {
                     if(!res.ok){
                         throw new Error("Fetch data failed");
@@ -103,15 +105,7 @@ const MovieDetails = () => {
 
     // Dynamic Nav Changes
     const handleClickNavChange = (id) => {
-        if(id === "cast"){
-            SetIsNavChange("cast");
-        }else if(id === "media"){
-            SetIsNavChange("media");
-        }else if(id === "reviews"){
-            SetIsNavChange("reviews");
-        }else if(id === "details"){
-            SetIsNavChange("details");
-        }
+        SetIsNavChange(id);
     }
 
     // View More Reviews Button
@@ -138,21 +132,30 @@ const MovieDetails = () => {
         <div className="flex flex-row h-screen">
             {/* Movie Poster */}
             <div className="relative flex flex-col items-start bg-white w-1/3 p-8 z-10">
+                {/* Back Button */}
                 <FontAwesomeIcon icon={faArrowLeft} size="1x" onClick={() => navigate(-1)} className="cursor-pointer " />
-                {loading ? (
-                    <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48"></div>
-                    ) : (
-                    movie.poster_path !== null ? (
-                    <img 
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
-                    alt={movie.name} 
-                    className="rounded-lg m-auto w-[25vw] h-[40vw]" 
-                    />
-                    ) : (
-                    <div className="flex justify-center items-center bg-gray-300 rounded-lg m-auto w-[25vw] h-[40vw]  "><p className="font-bold text-center text-gray-600">N/A</p></div>
+                {/* Movie Poster */}
+                {
+                    loading ? 
+                    (
+                        <div className="loader border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-16 h-16 animate-spin m-auto 2xl:my-48"></div>
+                    ) : 
+                    (
+                        movie.poster_path !== null ? 
+                        (
+                            <img 
+                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
+                            alt={movie.name} 
+                            className="rounded-lg m-auto w-[25vw] h-[40vw]" 
+                            />
+                        ) : 
+                        (
+                            <div className="flex justify-center items-center bg-gray-300 rounded-lg m-auto w-[25vw] h-[40vw]  "><p className="font-bold text-center text-gray-600">N/A</p></div>
+                        )
                     )
-                )}
+                }
             </div>
+
             {/* Movie Background */}
             <div style={{backgroundImage : `url(https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path})`}} className="text-white overflow-x-hidden montserrat bg-cover bg-center bg-red-950 w-2/3 p-8 ">
                 <div className="absolute inset-0 bg-black opacity-70"></div>
@@ -161,10 +164,11 @@ const MovieDetails = () => {
                         {/* Movie Title */}
                         <div className="flex justify-between items-center">
                             <h1 className="text-[1.6vw] font-bold">{movie.title} ({movie.release_date?.split('-')[0]})</h1>
-                            {/* NB: Add Search Input */}
+                            {/* Show Error Messages */}
+                            {error && <p className="text-red-600">{error}</p>}
                         </div>
                         <hr className="border-t border-gray-300 my-2" />
-                        {/* Movie Genres & Certificates */}
+                        {/* Movie Genres, Certificates and User Score */}
                         <div className="flex space-x-4 items-center flex-row">
                             <p className="text-[1.1vw]">{movie.genres?.map((genre) => genre.name).join(', ')}</p>
                             <p className="border-white border-2 font-bold text-[0.9vw] p-0.5 pr-1 pl-1">{certification ? certification : "NR"}</p>
@@ -184,30 +188,32 @@ const MovieDetails = () => {
                         </div>
                     </div>
                     {/* Casts */}
-                        
                         <div className={isNavChange === "cast"? "block" : "hidden"}>
                             {
-                            casts.length !== 0 ?
-                                <>
+                                casts.length !== 0 ?
+                                    <>
                                     <p className="text-[1.2vw] font-bold my-2">Top Casts</p>
                                     <div className="flex space-x-2 overflow-x-auto w-full">
                                     {
                                         casts.slice(0,20).map((cast) => (
                                             <div key={cast.id} className="flex-shrink-0 rounded-lg bg-white text-red-950 w-[8vw] h-[20vw] mb-1">
-                                                
                                                 {
-                                                // Check for the data is still being fetch
-                                                loading ? (
-                                                <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto 2xl:my-28 lg:my-18 md:my-14"></div>
-                                                ) : (
-                                                // Check is there image for the actors
-                                                cast.profile_path !== null ? (
+                                                    // Check for the data is still being fetch
+                                                    loading ? 
+                                                (
+                                                    <div className="loader animate-spin border-4 border-t-4 border-gray-200 border-t-blue-500 rounded-full w-[2vw] h-[2vw] m-auto 2xl:my-28 lg:my-18 md:my-14"></div>
+                                                ) : 
+                                                (
+                                                    // Check is there image for the actors
+                                                    cast.profile_path !== null ? 
+                                                (
                                                     <img 
                                                     src={`https://image.tmdb.org/t/p/w500${cast.profile_path}`} 
                                                     alt={cast.name} 
                                                     className="rounded-t-lg" 
                                                     />
-                                                ) : (
+                                                ) : 
+                                                (
                                                     <div className="flex justify-center items-center rounded-t-lg bg-gray-300 w-[8vw] h-[12vw] "><p className="font-bold text-center text-gray-600 text-[1vw]">N/A</p></div>
                                                 )
                                                 )}
@@ -278,6 +284,7 @@ const MovieDetails = () => {
                             </div>
 
                             }
+                            {/* Expand Reviews Button */}
                             {
                                 reviews.length !== 0 ? <p className="cursor-pointer mt-2 font-bold float-right" onClick={handleClickViewMore}>{viewMore === false ? "View More" : "View Less"}</p> : ""
                             }
@@ -354,9 +361,7 @@ const MovieDetails = () => {
                             <p>{movie.revenue ? `$${movie.revenue.toLocaleString()}` : "-"}</p>
                         </div>
                         <div className="flex flex-col mt-2 text-[1.2vw]">
-                            <p><b>Production Companies:</b> {movie.production_companies?.map((company) => company.name).join(', ')} </p>
-                            <p>
-                            </p>
+                            <p><b>Production Companies:</b> {movie.production_companies?.map((company) => company.name).join(', ')}</p>
                         </div>
 
 

@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 const Footer = () => {
     return(
         <div>
-            <footer className="flex place-content-evenly items-center bg-red-950 montserrat mt-24 p-4 text-white">
+            <footer className="flex justify-between items-center bg-red-950 montserrat mt-24 px-8 py-2 text-white">
                 {/* Brand */}
-                <Link to="/" className="flex items-center space-x-3 mt-4 mb-4 apothem   ">
-                    <span className="self-center text-2xl font-bold whitespace-nowrap text-white">PopDegrees</span>
+                <Link to="/" className="flex items-center space-x-3 apothem">
+                    <span className="self-center text-md md:text-2xl font-bold whitespace-nowrap text-white">PopDegrees</span>
                 </Link>
                 {/* Copyright */}
                 <p className="hidden sm:hidden md:block lg:block">Copyright <FontAwesomeIcon icon={faCopyright} /> 2024 - PeePoop</p>

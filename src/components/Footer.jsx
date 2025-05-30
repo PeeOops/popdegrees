@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
     return(
         <div>
-            <footer className="flex justify-between items-center bg-red-950 montserrat mt-24 px-8 py-2 text-white">
+            <footer className="flex justify-between items-center bg-red-950 montserrat mt-4 px-8 py-2 text-white">
                 {/* Brand */}
                 <Link to="/" className="flex items-center space-x-3 apothem">
                     <span className="self-center text-md md:text-2xl font-bold whitespace-nowrap text-white">PopDegrees</span>

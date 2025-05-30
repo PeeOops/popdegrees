@@ -41,8 +41,8 @@ const Navigation = () => {
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 {/* Logo and Brand */}
                 <Link to="/" className="flex items-center space-x-3">
-                    <img src={Logo} className="h-12 rounded-full border-2" alt="PopDegrees Logo" />
-                    <span className="self-center text-2xl font-bold whitespace-nowrap text-white apothem">PopDegrees</span>
+                    <img src={Logo} className="h-8 md:h-12 rounded-full border-2" alt="PopDegrees Logo" />
+                    <span className="self-center text-xl md:text-2xl font-bold whitespace-nowrap text-white apothem">PopDegrees</span>
                 </Link>
 
                 <div className={`flex md:order-2 ${currentURL === "/" ? "block md:hidden" : ""}`}>
@@ -62,7 +62,7 @@ const Navigation = () => {
                     </div>
                     {/* Hamburger Mobile Icon */}
                     <button data-collapse-toggle="navbar-search" type="button"
-                        className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-red-950 bg-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                        className="inline-flex items-center p-2 w-8 h-8 md:w-10 md:h-10 justify-center text-sm text-red-950 bg-white rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
                         aria-controls="navbar-search" aria-expanded="false" onClick={handleClickToggle}>
                         <span className="sr-only">Toggle</span>
                         <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -90,19 +90,19 @@ const Navigation = () => {
 
                     {/* Navigation Links */}
                     <ul
-                        className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-red-950 md:items-center">
+                        className="flex flex-col gap-2 p-2 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 md:flex-row md:mt-0 md:border-0 md:bg-red-950 md:items-center">
                         <li>
                             <Link to="/"
-                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 ${currentURL === "/" ? "md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2" : "md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white"}`}
+                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded ${currentURL === "/" ? "md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2" : "md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white"}`}
                                 aria-current={`${currentURL === "/" ? "page" : ""}`}>Home</Link>
                         </li>
                         <li>
                             <Link to="/movies"
-                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 ${currentURL === "/movies" ? "md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2" : "md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white"}`} aria-current={`${currentURL === "/movies" ? "page" : ""}`}>Movies</Link>
+                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded ${currentURL === "/movies" ? "md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2" : "md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white"}`} aria-current={`${currentURL === "/movies" ? "page" : ""}`}>Movies</Link>
                         </li>
                         <li>
                             <Link to="/series"
-                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded mt-2 ${currentURL === "/series" ? "md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2" : "md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white"}`} aria-current={`${currentURL === "/" ? "/series" : ""}`}>TV Series</Link>
+                                className={`block py-2 px-3 text-yellow-300 bg-red-950 rounded ${currentURL === "/series" ? "md:bg-transparent md:text-white md:p-0 md:border-2 md:px-2" : "md:hover:bg-transparent md:hover:text-yellow-300 md:p-0 md:text-white"}`} aria-current={`${currentURL === "/" ? "/series" : ""}`}>TV Series</Link>
                         </li>
                     </ul>
                 </div>

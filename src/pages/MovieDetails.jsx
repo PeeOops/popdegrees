@@ -129,9 +129,9 @@ const MovieDetails = () => {
 
 
     return( 
-        <div className="flex flex-row h-screen">
+        <div className="flex flex-col md:flex-row md:h-screen">
             {/* Movie Poster */}
-            <div className="relative flex flex-col items-start bg-white w-1/3 p-8 z-10">
+            <div className="relative flex flex-col items-start bg-white w-full md:w-1/3 md:p-8 z-10">
                 {/* Back Button */}
                 <FontAwesomeIcon icon={faArrowLeft} size="1x" onClick={() => navigate(-1)} className="cursor-pointer " />
                 {/* Movie Poster */}
@@ -146,7 +146,7 @@ const MovieDetails = () => {
                             <img 
                             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} 
                             alt={movie.name} 
-                            className="rounded-lg m-auto w-[25vw] h-[40vw]" 
+                            className="rounded-lg m-auto w-full h-64" 
                             />
                         ) : 
                         (
